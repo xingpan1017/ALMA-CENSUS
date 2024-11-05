@@ -153,12 +153,14 @@ plotms(vis="phase_X4af001.cal",
        plotfile="nw14_selfcal_phase_scan001.png",
        showgui = True)
 
-
 ## Apply the solution of selfcal to the data using applycal
 applycal(vis=cont_vis,
          field="0",
          gaintable=["phase_X4af001.cal"],
          interp="linear")
+
+#################################################
+# Second iteration
 
 # The self-calibrated data are stored in the MS in the "corrected data" column. 
 # Split out the corrected data into a new data set.
@@ -167,3 +169,45 @@ os.system("rm -rf cygxnw14_cont_selfcal001.ms cygxnw14_cont_selfcal001.ms.flagve
 split(vis=cont_vis,
       outputvis="cygxnw14_X4af_contave_selfcal001.ms",
       datacolumn="corrected")
+
+os.system('rm -rf cygxnw14_X4af_contave_selfcal001.image.*')
+cont_selfcal_vis = "cygxnw14_X4af_contave_selfcal001.ms"
+imc = '0.01arcsec'
+ims = [3600,3600]
+nit = 1000
+threshold = '0.01mJy' # 3*rms; 1rms~4 mJy/beam per chan
+wt = 'briggs'
+rob = 0.5
+imname = "cygxnw14_X4af_contave_selfcal001"
+
+tclean(vis = cont_selfcal_vis,
+  imagename=imname,
+  specmode='mfs',
+  deconvolver='mtmfs',
+  niter=nit,
+  scales = [0,5,15,50],
+  imsize=ims, 
+  cell=imc,
+  # phasecenter = pc,
+  threshold=threshold,  
+  nterms=2, 
+  gridder='standard', 
+  weighting=wt,
+  outframe = 'LSRK', 
+  interactive = True,
+  pblimit = 0.2,
+  robust = rob,
+  pbcor = True,
+  savemodel='modelcolumn',
+  restoringbeam = 'common',
+  usemask = 'auto-multithresh',
+  ## b75 > 400m
+  sidelobethreshold = 2.5,
+  noisethreshold = 5.0,
+  minbeamfrac = 0.3,
+  lownoisethreshold = 1.5,
+  negativethreshold = 0.0,
+  fastnoise = True,
+  pbmask = 0.3)
+
+exportfits(imagename=sourcename+".image.tt0.pbcor", fitsimage=sourcename+".image.tt0.pbcor.fits", overwrite=True, history=True, dropdeg=True)
