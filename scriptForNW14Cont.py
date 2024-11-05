@@ -78,7 +78,8 @@ rob = 0.5
 tclean(vis = cont_vis,
   imagename=imname,
   specmode='mfs',
-  deconvolver='mtmfs',
+  #deconvolver='mtmfs',
+  deconvolver='hogbom',
   niter=nit,
   scales = [0,5,15,50,200],
   imsize=ims, 
@@ -183,7 +184,8 @@ imname = "cygxnw14_X4af_contave_selfcal001"
 tclean(vis = cont_selfcal_vis,
   imagename=imname,
   specmode='mfs',
-  deconvolver='mtmfs',
+  #deconvolver='mtmfs',
+  deconvolver='hogbom',
   niter=nit,
   scales = [0,5,15,50],
   imsize=ims, 
@@ -210,4 +212,96 @@ tclean(vis = cont_selfcal_vis,
   fastnoise = True,
   pbmask = 0.3)
 
-exportfits(imagename=sourcename+".image.tt0.pbcor", fitsimage=sourcename+".image.tt0.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.tt0.pbcor", fitsimage=imname+".image.tt0.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
+os.system("rm -rf phase_X4af002.cal")
+
+## plotants we can use this function to check the position of all the antennas
+## flagdata mode=summary to check the fraction of flagged data for each antenna
+
+gaincal(vis=cont_vis,
+        caltable="phase_X4af002.cal",
+        field="0",
+        #combine="spw",
+        solint="60",  # Reduce the intergation time
+        calmode="p",
+        refant="DA54", # The reference ant should be as close as to the center of the configuration
+        gaintype="G")
+
+plotms(vis='phase_X4af002.cal', xaxis='time', yaxis='SNR')
+plotms(vis='phase_X4af002.cal', xaxis='time', yaxis='phase')
+
+## Plot the resulting solutions.
+plotms(vis="phase_X4af002.cal", 
+       xaxis="time", 
+       yaxis="phase", 
+       gridrows=3, 
+       gridcols=3, 
+       iteraxis="antenna", 
+       plotrange=[0,0,-180,180], 
+       coloraxis='corr',
+       titlefont=7, 
+       xaxisfont=7, 
+       yaxisfont=7, 
+       plotfile="nw14_selfcal_phase_scan002.png",
+       showgui = True)
+
+## Apply the solution of selfcal to the data using applycal
+applycal(vis=cont_vis,
+         field="0",
+         gaintable=["phase_X4af002.cal"],
+         interp="linear")
+
+#################################################
+# Third iteration
+
+# The self-calibrated data are stored in the MS in the "corrected data" column. 
+# Split out the corrected data into a new data set.
+
+os.system("rm -rf cygxnw14_cont_selfcal002.ms cygxnw14_cont_selfcal002.ms.flagversions")
+split(vis=cont_vis,
+      outputvis="cygxnw14_X4af_contave_selfcal002.ms",
+      datacolumn="corrected")
+
+os.system('rm -rf cygxnw14_X4af_contave_selfcal002.image.*')
+cont_selfcal_vis = "cygxnw14_X4af_contave_selfcal002.ms"
+imc = '0.01arcsec'
+ims = [3600,3600]
+nit = 1000
+threshold = '0.01mJy' # 3*rms; 1rms~4 mJy/beam per chan
+wt = 'briggs'
+rob = 0.5
+imname = "cygxnw14_X4af_contave_selfcal002"
+
+tclean(vis = cont_selfcal_vis,
+  imagename=imname,
+  specmode='mfs',
+  #deconvolver='mtmfs',  ## Maybe the mtmfs is not a good deconvolver for selfcal
+  deconvolver='hogbom',
+  niter=nit,
+  scales = [0,5,15,50],
+  imsize=ims, 
+  cell=imc,
+  # phasecenter = pc,
+  threshold=threshold,  
+  nterms=2, 
+  gridder='standard', 
+  weighting=wt,
+  outframe = 'LSRK', 
+  interactive = False,
+  pblimit = 0.2,
+  robust = rob,
+  pbcor = True,
+  savemodel='modelcolumn',
+  restoringbeam = 'common',
+  usemask = 'auto-multithresh',
+  ## b75 > 400m
+  sidelobethreshold = 2.5,
+  noisethreshold = 5.0,
+  minbeamfrac = 0.3,
+  lownoisethreshold = 1.5,
+  negativethreshold = 0.0,
+  fastnoise = True,
+  pbmask = 0.3)
+
+exportfits(imagename=imname+".image.tt0.pbcor", fitsimage=imname+".image.tt0.pbcor.fits", overwrite=True, history=True, dropdeg=True)
