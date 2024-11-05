@@ -69,7 +69,7 @@ imname = sourcename
 imc = '0.01arcsec'
 ims = [3600,3600]
 nit = 1000
-threshold = '0.01mJy' # 3*rms; 1rms~4 mJy/beam per chan
+threshold = '0.1mJy' # 3*rms; 1rms~4 mJy/beam per chan
 wt = 'briggs'
 rob = 0.5
 # pc= 'J2000 20:24:31.6780 +42.04.22.51'
@@ -86,12 +86,12 @@ tclean(vis = cont_vis,
   cell=imc,
   # phasecenter = pc,
   threshold=threshold,  
-  nterms=2, 
+  # nterms=2, 
   gridder='standard', 
   weighting=wt,
   outframe = 'LSRK', 
   interactive = False,
-  pblimit = 0.2,
+  pblimit = 0.1,
   robust = rob,
   pbcor = True,
   savemodel='modelcolumn',
@@ -106,7 +106,8 @@ tclean(vis = cont_vis,
   fastnoise = True,
   pbmask = 0.3)
 
-exportfits(imagename=sourcename+".image.tt0.pbcor", fitsimage=sourcename+".image.tt0.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
 
 ################################################################################################
 ## Try playing around with different solution intervals or averaging options. Bear in mind that 
@@ -176,7 +177,7 @@ cont_selfcal_vis = "cygxnw14_X4af_contave_selfcal001.ms"
 imc = '0.01arcsec'
 ims = [3600,3600]
 nit = 1000
-threshold = '0.01mJy' # 3*rms; 1rms~4 mJy/beam per chan
+threshold = '0.1mJy' # 3*rms; 1rms~4 mJy/beam per chan
 wt = 'briggs'
 rob = 0.5
 imname = "cygxnw14_X4af_contave_selfcal001"
@@ -192,12 +193,12 @@ tclean(vis = cont_selfcal_vis,
   cell=imc,
   # phasecenter = pc,
   threshold=threshold,  
-  nterms=2, 
+  #nterms=2, 
   gridder='standard', 
   weighting=wt,
   outframe = 'LSRK', 
-  interactive = True,
-  pblimit = 0.2,
+  interactive = False,
+  pblimit = 0.1,
   robust = rob,
   pbcor = True,
   savemodel='modelcolumn',
@@ -212,7 +213,8 @@ tclean(vis = cont_selfcal_vis,
   fastnoise = True,
   pbmask = 0.3)
 
-exportfits(imagename=imname+".image.tt0.pbcor", fitsimage=imname+".image.tt0.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
 
 os.system("rm -rf phase_X4af002.cal")
 
@@ -289,7 +291,7 @@ tclean(vis = cont_selfcal_vis,
   weighting=wt,
   outframe = 'LSRK', 
   interactive = False,
-  pblimit = 0.2,
+  pblimit = 0.1,
   robust = rob,
   pbcor = True,
   savemodel='modelcolumn',
