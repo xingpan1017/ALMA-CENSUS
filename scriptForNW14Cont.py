@@ -62,10 +62,9 @@ split(vis=calib_vis,
 
 #########################################################
 ## First iteration
-cont_vis='./cygxnw14_X4af_contave.ms'
+cont_selfcal_vis='./cygxnw14_X4af_contave.ms'
 
-sourcename='cygxnw14_X4af_contave_selfcal000'
-imname = sourcename
+imname='cygxnw14_X4af_contave_selfcal000'
 imc = '0.01arcsec'
 ims = [3600,3600]
 nit = 1000
@@ -75,7 +74,7 @@ rob = 0.5
 # pc= 'J2000 20:24:31.6780 +42.04.22.51'
 
 # Generate the model image
-tclean(vis = cont_vis,
+tclean(vis = cont_selfcal_vis,
   imagename=imname,
   specmode='mfs',
   #deconvolver='mtmfs',
@@ -128,7 +127,7 @@ os.system("rm -rf phase_X4af001.cal")
 ## plotants we can use this function to check the position of all the antennas
 ## flagdata mode=summary to check the fraction of flagged data for each antenna
 
-gaincal(vis=cont_vis,
+gaincal(vis=cont_selfcal_vis,
         caltable="phase_X4af001.cal",
         field="0",
         #combine="spw",
@@ -156,7 +155,7 @@ plotms(vis="phase_X4af001.cal",
        showgui = True)
 
 ## Apply the solution of selfcal to the data using applycal
-applycal(vis=cont_vis,
+applycal(vis=cont_selfcal_vis,
          field="0",
          gaintable=["phase_X4af001.cal"],
          interp="linear")
@@ -168,14 +167,14 @@ applycal(vis=cont_vis,
 # Split out the corrected data into a new data set.
 
 os.system("rm -rf cygxnw14_cont_selfcal001.ms cygxnw14_cont_selfcal001.ms.flagversions")
-split(vis=cont_vis,
+split(vis=cont_selfcal_vis,
       outputvis="cygxnw14_X4af_contave_selfcal001.ms",
       datacolumn="corrected")
 
 os.system('rm -rf cygxnw14_X4af_contave_selfcal001.image.*')
 cont_selfcal_vis = "cygxnw14_X4af_contave_selfcal001.ms"
 imc = '0.01arcsec'
-ims = [3600,3600]
+ims = [4000,4000]
 nit = 1000
 threshold = '0.1mJy' # 3*rms; 1rms~4 mJy/beam per chan
 wt = 'briggs'
@@ -221,7 +220,7 @@ os.system("rm -rf phase_X4af002.cal")
 ## plotants we can use this function to check the position of all the antennas
 ## flagdata mode=summary to check the fraction of flagged data for each antenna
 
-gaincal(vis=cont_vis,
+gaincal(vis=cont_selfcal_vis,
         caltable="phase_X4af002.cal",
         field="0",
         #combine="spw",
@@ -249,7 +248,7 @@ plotms(vis="phase_X4af002.cal",
        showgui = True)
 
 ## Apply the solution of selfcal to the data using applycal
-applycal(vis=cont_vis,
+applycal(vis=cont_selfcal_vis,
          field="0",
          gaintable=["phase_X4af002.cal"],
          interp="linear")
@@ -260,17 +259,17 @@ applycal(vis=cont_vis,
 # The self-calibrated data are stored in the MS in the "corrected data" column. 
 # Split out the corrected data into a new data set.
 
-os.system("rm -rf cygxnw14_cont_selfcal002.ms cygxnw14_cont_selfcal002.ms.flagversions")
-split(vis=cont_vis,
+os.system("rm -rf cygxnw14_X4af_contave_selfcal002.ms cygxnw14_X4af_contave_selfcal002.ms.flagversions")
+split(vis=cont_selfcal_vis,
       outputvis="cygxnw14_X4af_contave_selfcal002.ms",
       datacolumn="corrected")
 
 os.system('rm -rf cygxnw14_X4af_contave_selfcal002.image.*')
 cont_selfcal_vis = "cygxnw14_X4af_contave_selfcal002.ms"
 imc = '0.01arcsec'
-ims = [3600,3600]
-nit = 1000
-threshold = '0.01mJy' # 3*rms; 1rms~4 mJy/beam per chan
+ims = [4800,4800]
+nit = 10000
+threshold = '0.05mJy' # 3*rms; 1rms~4 mJy/beam per chan
 wt = 'briggs'
 rob = 0.5
 imname = "cygxnw14_X4af_contave_selfcal002"
@@ -281,12 +280,12 @@ tclean(vis = cont_selfcal_vis,
   #deconvolver='mtmfs',  ## Maybe the mtmfs is not a good deconvolver for selfcal
   deconvolver='hogbom',
   niter=nit,
-  scales = [0,5,15,50],
+  #scales = [0,5,15,50],
   imsize=ims, 
   cell=imc,
   # phasecenter = pc,
   threshold=threshold,  
-  nterms=2, 
+  #nterms=2, 
   gridder='standard', 
   weighting=wt,
   outframe = 'LSRK', 
@@ -306,4 +305,224 @@ tclean(vis = cont_selfcal_vis,
   fastnoise = True,
   pbmask = 0.3)
 
-exportfits(imagename=imname+".image.tt0.pbcor", fitsimage=imname+".image.tt0.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
+os.system("rm -rf phase_X4af003.cal")
+
+## plotants we can use this function to check the position of all the antennas
+## flagdata mode=summary to check the fraction of flagged data for each antenna
+
+gaincal(vis=cont_selfcal_vis,
+        caltable="phase_X4af003.cal",
+        field="0",
+        #combine="spw",
+        solint="30",  # Reduce the intergation time
+        calmode="p",
+        refant="DA54", # The reference ant should be as close as to the center of the configuration
+        gaintype="G")
+
+plotms(vis='phase_X4af003.cal', xaxis='time', yaxis='SNR')
+plotms(vis='phase_X4af003.cal', xaxis='time', yaxis='phase')
+
+## Plot the resulting solutions.
+plotms(vis="phase_X4af003.cal", 
+       xaxis="time", 
+       yaxis="phase", 
+       gridrows=3, 
+       gridcols=3, 
+       iteraxis="antenna", 
+       plotrange=[0,0,-180,180], 
+       coloraxis='corr',
+       titlefont=7, 
+       xaxisfont=7, 
+       yaxisfont=7, 
+       plotfile="nw14_selfcal_phase_scan003.png",
+       showgui = True)
+
+## Apply the solution of selfcal to the data using applycal
+applycal(vis=cont_selfcal_vis,
+         field="0",
+         gaintable=["phase_X4af003.cal"],
+         interp="linear")
+
+
+#################################################
+# Fourth iteration
+
+# The self-calibrated data are stored in the MS in the "corrected data" column. 
+# Split out the corrected data into a new data set.
+
+os.system("rm -rf cygxnw14_X4af_contave_selfcal003.ms cygxnw14_X4af_contave_selfcal003.ms.flagversions")
+split(vis=cont_selfcal_vis,
+      outputvis="cygxnw14_X4af_contave_selfcal003.ms",
+      datacolumn="corrected")
+
+os.system('rm -rf cygxnw14_X4af_contave_selfcal003.image.*')
+cont_selfcal_vis = "cygxnw14_X4af_contave_selfcal003.ms"
+imc = '0.01arcsec'
+ims = [4800,4800]
+nit = 100000
+threshold = '0.05mJy' # 3*rms; 1rms~4 mJy/beam per chan
+wt = 'briggs'
+rob = 0.5
+imname = "cygxnw14_X4af_contave_selfcal003"
+
+tclean(vis = cont_selfcal_vis,
+  imagename=imname,
+  specmode='mfs',
+  #deconvolver='mtmfs',  ## Maybe the mtmfs is not a good deconvolver for selfcal
+  deconvolver='hogbom',
+  niter=nit,
+  #scales = [0,5,15,50],
+  imsize=ims, 
+  cell=imc,
+  # phasecenter = pc,
+  threshold=threshold,  
+  #nterms=2, 
+  gridder='standard', 
+  weighting=wt,
+  outframe = 'LSRK', 
+  interactive = False,
+  pblimit = 0.1,
+  robust = rob,
+  pbcor = True,
+  savemodel='modelcolumn',
+  restoringbeam = 'common',
+  usemask = 'auto-multithresh',
+  ## b75 > 400m
+  sidelobethreshold = 2.5,
+  noisethreshold = 5.0,
+  minbeamfrac = 0.3,
+  lownoisethreshold = 1.5,
+  negativethreshold = 0.0,
+  fastnoise = True,
+  pbmask = 0.3)
+
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
+os.system("rm -rf phase_X4af004.cal")
+
+## plotants we can use this function to check the position of all the antennas
+## flagdata mode=summary to check the fraction of flagged data for each antenna
+
+gaincal(vis=cont_selfcal_vis,
+        caltable="phase_X4af004.cal",
+        field="0",
+        #combine="spw",
+        solint="16",  # Reduce the intergation time
+        calmode="p",
+        refant="DA54", # The reference ant should be as close as to the center of the configuration
+        gaintype="G")
+
+plotms(vis='phase_X4af004.cal', xaxis='time', yaxis='SNR')
+plotms(vis='phase_X4af004.cal', xaxis='time', yaxis='phase')
+
+## Plot the resulting solutions.
+plotms(vis="phase_X4af004.cal", 
+       xaxis="time", 
+       yaxis="phase", 
+       gridrows=3, 
+       gridcols=3, 
+       iteraxis="antenna", 
+       plotrange=[0,0,-180,180], 
+       coloraxis='corr',
+       titlefont=7, 
+       xaxisfont=7, 
+       yaxisfont=7, 
+       plotfile="nw14_selfcal_phase_scan004.png",
+       showgui = True)
+
+## Apply the solution of selfcal to the data using applycal
+applycal(vis=cont_selfcal_vis,
+         field="0",
+         gaintable=["phase_X4af004.cal"],
+         interp="linear")
+
+#################################################
+# Fifth iteration
+
+# The self-calibrated data are stored in the MS in the "corrected data" column. 
+# Split out the corrected data into a new data set.
+
+os.system("rm -rf cygxnw14_X4af_contave_selfcal004.ms cygxnw14_X4af_contave_selfcal004.ms.flagversions")
+split(vis=cont_selfcal_vis,
+      outputvis="cygxnw14_X4af_contave_selfcal004.ms",
+      datacolumn="corrected")
+
+os.system('rm -rf cygxnw14_X4af_contave_selfcal004.image.*')
+cont_selfcal_vis = "cygxnw14_X4af_contave_selfcal004.ms"
+imc = '0.01arcsec'
+ims = [4800,4800]
+nit = 1000000
+threshold = '0.02mJy' # 3*rms; 1rms~ 50 uJy/beam 
+wt = 'briggs'
+rob = 0.5
+imname = "cygxnw14_X4af_contave_selfcal004"
+
+tclean(vis = cont_selfcal_vis,
+  imagename=imname,
+  specmode='mfs',
+  #deconvolver='mtmfs',  ## Maybe the mtmfs is not a good deconvolver for selfcal
+  deconvolver='hogbom',
+  niter=nit,
+  #scales = [0,5,15,50],
+  imsize=ims, 
+  cell=imc,
+  # phasecenter = pc,
+  threshold=threshold,  
+  #nterms=2, 
+  gridder='standard', 
+  weighting=wt,
+  outframe = 'LSRK', 
+  interactive = False,
+  pblimit = 0.1,
+  robust = rob,
+  pbcor = True,
+  savemodel='modelcolumn',
+  restoringbeam = 'common',
+  usemask = 'auto-multithresh',
+  ## b75 > 400m
+  sidelobethreshold = 2.5,
+  noisethreshold = 5.0,
+  minbeamfrac = 0.3,
+  lownoisethreshold = 1.5,
+  negativethreshold = 0.0,
+  fastnoise = True,
+  pbmask = 0.3)
+
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
+## Insufficient unflagged data points to apply selfcal
+#os.system("rm -rf phase_X4af005.cal")
+
+# Run the first round of amp self calibration using the improved model.
+os.system('rm -rf amp_X4af001.cal')
+gaincal(vis=cont_selfcal_vis,
+        caltable='amp_X4af001.cal',
+        field='0',
+        solint='16',
+        calmode='ap',
+        refant='DA54',
+        gaintype='G',
+        gaintable=['phase_X4af004.cal'],
+        solnorm=True)
+
+plotms(vis='amp_X4af001.cal', xaxis='time', yaxis='amp')
+
+## Plot the resulting solutions.
+plotms(vis="amp_X4af001.cal", 
+       xaxis="time", 
+       yaxis="amp", 
+       gridrows=3, 
+       gridcols=3, 
+       iteraxis="antenna", 
+       #plotrange=[0,0,-180,180], 
+       coloraxis='corr',
+       titlefont=7, 
+       xaxisfont=7, 
+       yaxisfont=7, 
+       plotfile="nw14_selfcal_amp_scan001.png",
+       showgui = True)
