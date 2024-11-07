@@ -978,3 +978,186 @@ tclean(vis = cont_selfcal_vis,
 
 exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
 exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
+os.system("rm -rf phase_X8203004.cal")
+
+## plotants we can use this function to check the position of all the antennas
+## flagdata mode=summary to check the fraction of flagged data for each antenna
+
+gaincal(vis=cont_selfcal_vis,
+        caltable="phase_X8203004.cal",
+        field="0",
+        #combine="spw",
+        solint="16",  # Reduce the intergation time
+        calmode="p",
+        refant="DA54", # The reference ant should be as close as to the center of the configuration
+        gaintype="G")
+
+## Plot the resulting solutions.
+plotms(vis="phase_X8203004.cal", 
+       xaxis="time", 
+       yaxis="phase", 
+       gridrows=3, 
+       gridcols=3, 
+       iteraxis="antenna", 
+       plotrange=[0,0,-180,180], 
+       coloraxis='corr',
+       titlefont=7, 
+       xaxisfont=7, 
+       yaxisfont=7, 
+       plotfile="nw14_selfcal_phase_scan004.png",
+       showgui = True)
+
+## Apply the solution of selfcal to the data using applycal
+applycal(vis=cont_selfcal_vis,
+         field="0",
+         gaintable=["phase_X8203004.cal"],
+         interp="linear")
+
+#################################################
+# Fifth iteration
+
+# The self-calibrated data are stored in the MS in the "corrected data" column. 
+# Split out the corrected data into a new data set.
+
+os.system("rm -rf cygxnw14_X8203_contave_selfcal004.ms cygxnw14_X8203_contave_selfcal004.ms.flagversions")
+split(vis=cont_selfcal_vis,
+      outputvis="cygxnw14_X8203_contave_selfcal004.ms",
+      datacolumn="corrected")
+
+os.system('rm -rf cygxnw14_X8203_contave_selfcal004.image.*')
+cont_selfcal_vis = "cygxnw14_X8203_contave_selfcal004.ms"
+imc = '0.01arcsec'
+ims = [4800,4800]
+nit = 1000000
+threshold = '0.02mJy' # 3*rms; 1rms~4 mJy/beam per chan
+wt = 'briggs'
+rob = 0.5
+imname = "cygxnw14_X8203_contave_selfcal004"
+
+tclean(vis = cont_selfcal_vis,
+  imagename=imname,
+  specmode='mfs',
+  #deconvolver='mtmfs',
+  deconvolver='hogbom',
+  niter=nit,
+  #scales = [0,5,15,50],
+  imsize=ims, 
+  cell=imc,
+  # phasecenter = pc,
+  threshold=threshold,  
+  # nterms=2, 
+  gridder='standard', 
+  weighting=wt,
+  outframe = 'LSRK', 
+  interactive = False,
+  pblimit = 0.1,
+  robust = rob,
+  pbcor = True,
+  savemodel='modelcolumn',
+  restoringbeam = 'common',
+  usemask = 'auto-multithresh',
+  ## b75 > 400m
+  sidelobethreshold = 2.5,
+  noisethreshold = 5.0,
+  minbeamfrac = 0.3,
+  lownoisethreshold = 1.5,
+  negativethreshold = 0.0,
+  fastnoise = True,
+  #pbmask = 0.3,
+)
+
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
+######################################################################
+# Run the first round of amp self calibration using the improved model.
+os.system('rm -rf amp_X8203001.cal')
+gaincal(vis=cont_selfcal_vis,
+        caltable='amp_X8203001.cal',
+        field='0',
+        solint='16',
+        calmode='ap',
+        refant='DA54',
+        gaintype='G',
+        gaintable=['phase_X8203004.cal'],
+        solnorm=True)
+
+plotms(vis='amp_X8203001.cal', xaxis='time', yaxis='amp')
+
+## Plot the resulting solutions.
+plotms(vis="amp_X8203001.cal", 
+       xaxis="time", 
+       yaxis="amp", 
+       gridrows=3, 
+       gridcols=3, 
+       iteraxis="antenna", 
+       #plotrange=[0,0,-180,180], 
+       coloraxis='corr',
+       titlefont=7, 
+       xaxisfont=7, 
+       yaxisfont=7, 
+       plotfile="nw14_selfcal_amp_scan001.png",
+       showgui = True)
+
+## Apply the solution of selfcal to the data using applycal
+applycal(vis=cont_selfcal_vis,
+         field="0",
+         gaintable=["phase_X8203004.cal", "amp_X8203001.cal"],
+         interp="linear")
+
+# The self-calibrated data are stored in the MS in the "corrected data" column. 
+# Split out the corrected data into a new data set.
+
+os.system("rm -rf cygxnw14_X8203_contave_selfcal005.ms cygxnw14_X8203_contave_selfcal005.ms.flagversions")
+split(vis=cont_selfcal_vis,
+      outputvis="cygxnw14_X8203_contave_selfcal005.ms",
+      datacolumn="corrected")
+
+###################################################################################################
+## Combine the two datasets and make image together
+###################################################################################################
+
+cont_selfcal_comb_list = ["cygxnw14_X8203_contave_selfcal005.ms", "cygxnw14_X4af_contave_selfcal005.ms"]
+imc = '0.01arcsec'
+ims = [4800,4800]
+nit = 1000000
+threshold = '0.02mJy' # 3*rms; 1rms~4 mJy/beam per chan
+wt = 'briggs'
+rob = 0.5
+imname = "cygxnw14_combin_selfcal"
+
+tclean(vis = cont_selfcal_comb_list,
+  imagename=imname,
+  specmode='mfs',
+  deconvolver='multiscale',
+  #deconvolver='hogbom',
+  niter=nit,
+  scales = [0,5,15,50],
+  imsize=ims, 
+  cell=imc,
+  # phasecenter = pc,
+  threshold=threshold,  
+  # nterms=2, 
+  gridder='mosaic', 
+  weighting=wt,
+  outframe = 'LSRK', 
+  interactive = False,
+  pblimit = 0.1,
+  robust = rob,
+  pbcor = True,
+  savemodel='modelcolumn',
+  restoringbeam = 'common',
+  usemask = 'auto-multithresh',
+  ## b75 > 400m
+  sidelobethreshold = 2.5,
+  noisethreshold = 5.0,
+  minbeamfrac = 0.3,
+  lownoisethreshold = 1.5,
+  negativethreshold = 0.0,
+  fastnoise = True,
+  #pbmask = 0.3,
+)
+
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
