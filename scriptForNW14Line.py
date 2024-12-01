@@ -1,7 +1,7 @@
 #############################################################################
 ## Image line emission from the two datasets
 #############################################################################
-
+## cd /reduction/xingpan/ALMA/CENSUS/maps/NW14/Line
 ## Restore .ms file before continuum flag
 myvis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms"]
 
@@ -62,47 +62,50 @@ for myvis in myvis_list:
         fitspec=fc, 
         fitorder=0)
 
+linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X4af", "./CO_2_1/cygxnw14_CO_2_1_X8203"]
+
 ## Image CO 2-1
 ## Image Parameters
-cell = '0.015arcsec'
-imsize = 960
-weighting = 'briggs'
-robust = 0.5
-threshold = '0.1mJy'
-imname = './line/'
-niter = 100000
-pc = 'ICRS 17:44:40.391513 -29.28.14.567605'
-restfreq = '345.7959899GHz'
-start = '-100km/s'  ## Vsys ~5.5 km/s
-nchan = 250
 
-tclean(vis = linelist,
-  imagename=imname,
-  specmode='cube',
-  deconvolver = 'multiscale',
-  spw = '4', ## Only select spw2 to image
-  niter = niter,
-  start = start,
-  nchan = nchan,
-  scales = [0,5,15,50],
-  imsize=imsize,
-  cell=cell,
-  restfreq = restfreq,
-  phasecenter = pc,
-  threshold=threshold,  
-  #nterms=2, 
-  gridder='mosaic', 
-  weighting=weighting,
-  outframe = 'LSRK', 
-  interactive = False,
-  pblimit = 0.1,
-  robust = robust,
-  usemask = 'auto-multithresh',
-  sidelobethreshold = 3.0,
-  noisethreshold = 5.0,
-  minbeamfrac = 0.3,
-  lownoisethreshold = 1.5,
-  negativethreshold = 0.0,
-  pbmask = 0.3)
-
-exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+for linevis, imname in zip():
+  cell = '0.015arcsec'
+  imsize = 3200
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '0.1mJy'
+  niter = 100000
+  restfreq = '230.5380GHz'
+  start = '-100km/s'  ## Vsys ~5.5 km/s
+  nchan = 250
+  
+  tclean(vis = linevis,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    spw = '4', ## Only select spw4 to image, cover CO 2-1
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,15,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = robust,
+    usemask = 'auto-multithresh',
+    sidelobethreshold = 3.0,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold = 0.0,
+    pbmask = 0.3)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
