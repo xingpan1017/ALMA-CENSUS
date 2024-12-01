@@ -62,19 +62,20 @@ for myvis in myvis_list:
         fitspec=fc, 
         fitorder=0)
 
+## Create CO_2_1 directory
 linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
 imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X4af", "./CO_2_1/cygxnw14_CO_2_1_X8203"]
 
-## Image CO 2-1
+## Image CO 2-1 for each date
 ## Image Parameters
 
-for linevis, imname in zip():
+for linevis, imname in zip(linevis_list, imname_list):
   cell = '0.015arcsec'
   imsize = 3200
   weighting = 'briggs'
   robust = 0.5
-  threshold = '0.1mJy'
-  niter = 100000
+  threshold = '1mJy'
+  niter = 1000000
   restfreq = '230.5380GHz'
   start = '-100km/s'  ## Vsys ~5.5 km/s
   nchan = 250
@@ -101,11 +102,12 @@ for linevis, imname in zip():
     pblimit = 0.1,
     robust = robust,
     usemask = 'auto-multithresh',
-    sidelobethreshold = 3.0,
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
     noisethreshold = 5.0,
     minbeamfrac = 0.3,
     lownoisethreshold = 1.5,
     negativethreshold = 0.0,
-    pbmask = 0.3)
+    fastnoise = True,)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
