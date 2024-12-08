@@ -10,7 +10,7 @@ for myvis in myvis_list:
 
 ## Make linecube for each spw
 myvis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms"]
-for i in [4]:
+for i in range(6):
     imvis = myvis_list[1]
     imname = './spwcube/NW14_X8203_cube_spw%d'%i
     nit = 100
