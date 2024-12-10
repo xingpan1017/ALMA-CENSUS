@@ -211,3 +211,53 @@ for linevis, imname in zip(linevis_list, imname_list):
     fastnoise = True,)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+## Create 13CO_2_1 directory
+linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./13CO_2_1/cygxnw14_13CO_2_1_X4af", "./13CO_2_1/cygxnw14_13CO_2_1_X8203"]
+
+## Image 13CO 2-1 for each date
+## Image Parameters
+
+for linevis, imname in zip(linevis_list, imname_list):
+  cell = '0.015arcsec'
+  imsize = 3200
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '1mJy'
+  niter = 1000000
+  restfreq = '220.3986842GHz'
+  start = '-40km/s'  ## Vsys ~5.5 km/s
+  nchan = 150
+  
+  tclean(vis = linevis,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    spw = '2', ## Only select spw2 to image, cover 13CO 2-1
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,15,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = robust,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold = 0.0,
+    fastnoise = True,)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
