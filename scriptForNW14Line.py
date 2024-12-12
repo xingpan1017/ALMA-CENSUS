@@ -261,3 +261,281 @@ for linevis, imname in zip(linevis_list, imname_list):
     fastnoise = True,)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+## Create C18O_2_1 directory
+!mkdir C18O_2_1
+
+molecule = "C18O_2_1"
+restfreq = "219.5603541GHz"
+
+linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
+
+## Image C18O 2-1 for each date
+## Image Parameters
+
+for linevis, imname in zip(linevis_list, imname_list):
+  cell = '0.015arcsec'
+  imsize = 3200
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '1mJy'
+  niter = 1000000
+  restfreq = restfreq
+  start = '-40km/s'  ## Vsys ~5.5 km/s
+  nchan = 150
+  
+  tclean(vis = linevis,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    #spw = '2', ## Only select spw2 to image, cover 13CO 2-1
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,15,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = robust,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold = 0.0,
+    fastnoise = True,)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+
+## Create CH3OH_4_2_3_1 directory
+!mkdir CH3OH_4_2_3_1
+
+molecule = "CH3OH_4_2_3_1"
+restfreq = "218.440063GHz"
+
+linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
+
+## Image CH3OH_4_2_3_1 for each date
+## Image Parameters
+
+for linevis, imname in zip(linevis_list, imname_list):
+  cell = '0.015arcsec'
+  imsize = 3200
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '1mJy'
+  niter = 1000000
+  restfreq = restfreq
+  start = '-20km/s'  ## Vsys ~5.5 km/s
+  nchan = 70
+  
+  tclean(vis = linevis,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    #spw = '2', ## Only select spw2 to image, cover 13CO 2-1
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,15,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = robust,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold = 0.0,
+    fastnoise = True,)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+
+## Create CH3OH_8_0_7_1 directory
+!mkdir CH3OH_8_0_7_1
+
+molecule = "CH3OH_8_0_7_1"
+restfreq = "220.078561GHz"
+
+linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
+
+## Image CH3OH_8_0_7_1 for each date
+## Image Parameters
+
+for linevis, imname in zip(linevis_list, imname_list):
+  cell = '0.015arcsec'
+  imsize = 3200
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '1mJy'
+  niter = 1000000
+  restfreq = restfreq
+  start = '-20km/s'  ## Vsys ~5.5 km/s
+  nchan = 70
+  
+  tclean(vis = linevis,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    #spw = '2', ## Only select spw2 to image, cover 13CO 2-1
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,15,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = robust,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold = 0.0,
+    fastnoise = True,)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+## Create DCN_3_2 directory
+!mkdir DCN_3_2
+
+molecule = "DCN_3_2"
+restfreq = "217.2384GHz"
+
+linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
+
+## Image DCN_3_2 for each date
+## Image Parameters
+
+for linevis, imname in zip(linevis_list, imname_list):
+  cell = '0.015arcsec'
+  imsize = 3200
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '1mJy'
+  niter = 1000000
+  restfreq = restfreq
+  start = '-20km/s'  ## Vsys ~5.5 km/s
+  nchan = 70
+  
+  tclean(vis = linevis,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    #spw = '2', ## Only select spw2 to image, cover 13CO 2-1
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,15,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = robust,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold = 0.0,
+    fastnoise = True,)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+
+## Create H30alpha directory
+!mkdir H30alpha
+
+molecule = "H30alpha"
+restfreq = "231.90092784GHz"
+
+linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
+
+## Image H30alpha for each date
+## Image Parameters
+
+for linevis, imname in zip(linevis_list, imname_list):
+  cell = '0.015arcsec'
+  imsize = 3200
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '1mJy'
+  niter = 1000000
+  restfreq = restfreq
+  start = '-20km/s'  ## Vsys ~5.5 km/s
+  nchan = 70
+  
+  tclean(vis = linevis,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    #spw = '2', ## Only select spw2 to image, cover 13CO 2-1
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,15,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = robust,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold = 0.0,
+    fastnoise = True,)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
