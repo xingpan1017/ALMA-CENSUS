@@ -536,6 +536,6 @@ for linevis, imname in zip(linevis_list, imname_list):
     minbeamfrac = 0.3,
     lownoisethreshold = 1.5,
     negativethreshold = 0.0,
-    fastnoise = True,)
+    fastnoise = True)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
