@@ -499,7 +499,7 @@ imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X
 
 for linevis, imname in zip(linevis_list, imname_list):
   cell = '0.015arcsec'
-  imsize = 3200
+  imsize = 800
   weighting = 'briggs'
   robust = 0.5
   threshold = '1mJy'
@@ -512,7 +512,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     imagename=imname,
     specmode='cube',
     deconvolver = 'multiscale',
-    #spw = '2', ## Only select spw2 to image, cover 13CO 2-1
+    spw = '5', ## Only select spw2 to image, cover 13CO 2-1
     niter = niter,
     start = start,
     nchan = nchan,
@@ -539,3 +539,121 @@ for linevis, imname in zip(linevis_list, imname_list):
     fastnoise = True)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+## Create H2CO 3(2,2)-2(2,1) directory
+!mkdir H2CO_3_22_2_21
+
+molecule = "H2CO_3_22_2_21"
+restfreq = "218.4757636GHz"
+
+linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
+
+## Image H2CO 3(2,2)-2(2,1) for each date
+## Image Parameters
+
+for linevis, imname in zip(linevis_list, imname_list):
+  cell = '0.015arcsec'
+  imsize = 1200
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '1mJy'
+  niter = 1000000
+  restfreq = restfreq
+  start = '-20km/s'  ## Vsys ~5.5 km/s
+  nchan = 70
+  
+  tclean(vis = linevis,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    #spw = '5', ## Only select spw2 to image, cover H2CO 3(2,2)-2(2,1)
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,15,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = robust,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold = 0.0,
+    fastnoise = True)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+## Create H2CO 3(2,2)-2(2,1) directory
+import os
+molecule_list = ["H2CO_3_22_2_21"]
+restfreq_list = ["218.4757636GHz"]
+imsize_list = [1200]
+niter_list = [1000]
+
+for molecule, restfreq, imsize in zip(molecule_list, restfreq_list, imsize_list):
+  if os.path.exists("./%s"%molecule):
+    os.removedirs("./%s"%molecule)
+  else:
+    os.mkdir("./%s"%molecule)
+  
+  linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+  imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
+
+  ## Image line data for each date
+  ## Image Parameters
+  
+  for linevis, imname in zip(linevis_list, imname_list):
+    cell = '0.015arcsec'
+    #imsize = imsize
+    weighting = 'briggs'
+    robust = 0.5
+    threshold = '1mJy'
+    #niter = niter
+    restfreq = restfreq
+    start = '-20km/s'  ## Vsys ~5.5 km/s
+    nchan = 70
+    
+    tclean(vis = linevis,
+      imagename=imname,
+      specmode='cube',
+      deconvolver = 'multiscale',
+      #spw = '5', ## Only select spw2 to image, cover H2CO 3(2,2)-2(2,1)
+      niter = niter,
+      start = start,
+      nchan = nchan,
+      scales = [0,5,15,50],
+      imsize=imsize,
+      cell=cell,
+      restfreq = restfreq,
+      #phasecenter = pc,
+      threshold=threshold,  
+      #nterms=2, 
+      gridder='standard', 
+      weighting=weighting,
+      outframe = 'LSRK', 
+      interactive = False,
+      pblimit = 0.1,
+      robust = robust,
+      usemask = 'auto-multithresh',
+    ## b75 > 400m
+      sidelobethreshold = 2.5,
+      noisethreshold = 5.0,
+      minbeamfrac = 0.3,
+      lownoisethreshold = 1.5,
+      negativethreshold = 0.0,
+      fastnoise = True)
+    
+    exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+    print("Finish %s image."%molecule)
