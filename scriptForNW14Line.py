@@ -602,7 +602,7 @@ restfreq_list = ["218.4757636GHz"]
 imsize_list = [1200]
 niter_list = [1000]
 
-for molecule, restfreq, imsize in zip(molecule_list, restfreq_list, imsize_list):
+for molecule, restfreq, imsize, niter in zip(molecule_list, restfreq_list, imsize_list, niter_list):
   if os.path.exists("./%s"%molecule):
     os.removedirs("./%s"%molecule)
   else:
