@@ -597,10 +597,10 @@ for linevis, imname in zip(linevis_list, imname_list):
 
 ## Create H2CO 3(2,2)-2(2,1) directory
 import os
-molecule_list = ["H2CO_3_22_2_21"]
-restfreq_list = ["218.4757636GHz"]
-imsize_list = [1200]
-niter_list = [1000]
+molecule_list = ["H2CO_3_22_2_21", "H2CO_3_21_2_20", "13CH3OH_14_13", "13CN_2_1"]
+restfreq_list = ["218.4757636GHz", "218.75605262GHz", "217.044616GHz", "217.294950GHz"]
+imsize_list = [1200, 1200, 800, 800]
+niter_list = [100000, 100000, 100000, 100000]
 
 for molecule, restfreq, imsize, niter in zip(molecule_list, restfreq_list, imsize_list, niter_list):
   if os.path.exists("./%s"%molecule):
