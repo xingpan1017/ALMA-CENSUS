@@ -599,18 +599,19 @@ for linevis, imname in zip(linevis_list, imname_list):
 import os
 molecule_list = ["H2CO_3_22_2_21", "H2CO_3_21_2_20", "13CH3OH_14_13", "13CN_2_1"]
 restfreq_list = ["218.4757636GHz", "218.75605262GHz", "217.044616GHz", "217.294950GHz"]
-imsize_list = [1200, 1200, 800, 600]
+imsize_list = [1200, 1200, 800, 800]
 niter_list = [100000, 100000, 100000, 100000]
+spw_list = [0, 0, 1, 1]
 
-for i in [3]:
-  molecule, restfreq, imsize, niter = molecule_list[i], restfreq_list[i], imsize_list[i], niter_list[i]
+for i in [2]:
+  molecule, restfreq, imsize, niter, spw = molecule_list[i], restfreq_list[i], imsize_list[i], niter_list[i], spw_list[i]
   
   if os.path.exists("./%s"%molecule):
     os.removedirs("./%s"%molecule)
   else:
     os.mkdir("./%s"%molecule)
   
-  linevis_list = ["../calibrated_rtdc12/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated_rtdc12/cygxnw14_A002_X1097a87_X8203.ms.line"]
+  linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
   imname_list = ["./%s/cygxnw14_%s_X4af"%(molecule, molecule), "./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
 
   ## Image line data for each date
@@ -629,10 +630,11 @@ for i in [3]:
       imagename=imname,
       specmode='cube',
       deconvolver = 'multiscale',
+      spw = "%d"%spw,
       niter = niter,
       start = start,
       nchan = nchan,
-      #scales = [0,5,15,50],
+      scales = [0,5,15,50],
       imsize=imsize,
       cell=cell,
       restfreq = restfreq,
