@@ -736,9 +736,7 @@ for x in range(2):
   for i in range(len(molecule_list)):
     molecule, restfreq, imsize, niter, spw = molecule_list[i], restfreq_list[i], imsize_list[i], niter_list[i], spw_list[i]
     
-    if os.path.exists("./%s"%molecule):
-      os.removedirs("./%s"%molecule)
-    else:
+    if not(os.path.exists("./%s"%molecule)):
       os.mkdir("./%s"%molecule)
     
     linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
