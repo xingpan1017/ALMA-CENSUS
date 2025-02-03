@@ -643,28 +643,28 @@ for linevis, imname in zip(linevis_list, imname_list):
 
 import os
 import numpy as np
-molecule_list = ["H2CO_3_22_2_21", "H2CO_3_21_2_20", "13CH3OH_14_13", "13CN_2_1", \
-                 "HNCO_10_3_9_3", "H13CN_10_9", "H2CN_3_2", "CH3CHO_12_3_11_3",\
-                 "CH3OCH3_13_12", "HNO3_12_11_hf", "33SO2_4_3", "CH3OH_18_17", \
-                "CH3OH_10_11"]
-restfreq_list = ["218.4757636GHz", "218.75605262GHz", "217.044616GHz", "217.294950GHz", \
-                 "219.6567695GHz", "219.706607GHz", "219.7353481GHz", "231.9683853GHz", \
-                 "231.9879198GHz", "232.0343425GHz", "232.418353GHz", "232.783446GHz", \
-                "232.945797GHz"]
-imsize_list = [1200, 1200, 800, 800, \
+molecule_list = ["H2CO_3_03_2_02", "H2CO_3_22_2_21", "H2CO_3_21_2_20", "13CH3OH_14_13", \
+                 "13CN_2_1", "HNCO_10_3_9_3", "H13CN_10_9", "H2CN_3_2", \
+                 "CH3CHO_12_3_11_3", "CH3OCH3_13_12", "HNO3_12_11_hf", "33SO2_4_3", \
+                 "CH3OH_18_17", "CH3OH_10_11"]
+restfreq_list = ["218.222192GHz", "218.4757636GHz", "218.75605262GHz", "217.044616GHz", \
+                 "217.294950GHz", "219.6567695GHz", "219.706607GHz", "219.7353481GHz", \
+                 "231.9683853GHz", "231.9879198GHz", "232.0343425GHz", "232.418353GHz", \
+                 "232.783446GHz", "232.945797GHz"]
+imsize_list = [4800, 4800, 4800, 800, \
                800, 800, 800, 800, \
                800, 800, 800, 800, \
-               800]
+               800, 800]
 niter_list = [100000, 100000, 100000, 100000, \
               100000, 100000, 100000, 100000, \
               100000, 100000, 100000, 100000, \
-              100000]
-spw_list = [0, 0, 1, 1, \
+              100000, 100000]
+spw_list = [0, 0, 0, 1, 1, \
             3, 3, 3, 5, \
             5, 5, 5, 5, \
             5]
 
-for i in np.arange(4,13):
+for i in np.arange(0,3):
   molecule, restfreq, imsize, niter, spw = molecule_list[i], restfreq_list[i], imsize_list[i], niter_list[i], spw_list[i]
   
   if os.path.exists("./%s"%molecule):
