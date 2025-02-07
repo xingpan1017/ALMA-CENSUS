@@ -110,8 +110,8 @@ for myvis in myvis_list:
 
 ## Create CO_2_1 directory
 robust = 2.0
-linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
-imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X4af_rob%.1f"%robust, "./CO_2_1/cygxnw14_CO_2_1_X8203_rob%.1f"%robust]
+linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line"]
+imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X8203_rob%.1f"%robust, "./CO_2_1/cygxnw14_CO_2_1_X4af_rob%.1f"%robust]
 
 ## Image CO 2-1 for each date
 ## Image Parameters
@@ -155,7 +155,8 @@ for linevis, imname in zip(linevis_list, imname_list):
     minbeamfrac = 0.3,
     lownoisethreshold = 1.5,
     negativethreshold = 0.0,
-    fastnoise = True,)
+    fastnoise = True,
+    parallel = True)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
 
