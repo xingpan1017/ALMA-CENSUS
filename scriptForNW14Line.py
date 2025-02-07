@@ -161,8 +161,9 @@ for linevis, imname in zip(linevis_list, imname_list):
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
 
 ## Create SiO_5_4 directory
-linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
-imname_list = ["./SiO_5_4/cygxnw14_SiO_5_4_X4af", "./SiO_5_4/cygxnw14_SiO_5_4_X8203"]
+robust = 2.0
+linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line"]
+imname_list = ["./SiO_5_4/cygxnw14_SiO_5_4_X8203_rob%.1f"%robust, "./SiO_5_4/cygxnw14_SiO_5_4_X4af_rob%.1f"%robust]
 
 ## Image SiO 5-4 for each date
 ## Image Parameters
@@ -171,7 +172,7 @@ for linevis, imname in zip(linevis_list, imname_list):
   cell = '0.015arcsec'
   imsize = 3200
   weighting = 'briggs'
-  robust = 0.5
+  #robust = 0.5
   threshold = '1mJy'
   niter = 1000000
   restfreq = '217.10498GHz'
@@ -206,7 +207,8 @@ for linevis, imname in zip(linevis_list, imname_list):
     minbeamfrac = 0.3,
     lownoisethreshold = 1.5,
     negativethreshold = 0.0,
-    fastnoise = True,)
+    fastnoise = True,
+    parallel = True)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
 
@@ -715,7 +717,8 @@ for i in np.arange(1,3):
       minbeamfrac = 0.3,
       lownoisethreshold = 1.5,
       negativethreshold = 0.0,
-      fastnoise = True)
+      fastnoise = True,
+      parallel = True)
     
     exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
     exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
@@ -783,7 +786,8 @@ for x in range(2):
         minbeamfrac = 0.3,
         lownoisethreshold = 1.5,
         negativethreshold = 0.0,
-        fastnoise = True)
+        fastnoise = True,
+        parallel = True)
       
       exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
       exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
