@@ -109,8 +109,9 @@ for myvis in myvis_list:
         fitorder=0)
 
 ## Create CO_2_1 directory
+robust = 2.0
 linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
-imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X4af", "./CO_2_1/cygxnw14_CO_2_1_X8203"]
+imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X4af_rob%.1f"%robust, "./CO_2_1/cygxnw14_CO_2_1_X8203_rob%.1f"%robust]
 
 ## Image CO 2-1 for each date
 ## Image Parameters
@@ -119,7 +120,7 @@ for linevis, imname in zip(linevis_list, imname_list):
   cell = '0.015arcsec'
   imsize = 3200
   weighting = 'briggs'
-  robust = 0.5
+  #robust = 0.5
   threshold = '1mJy'
   niter = 1000000
   restfreq = '230.5380GHz'
@@ -664,7 +665,7 @@ spw_list = [0, 0, 0, 1, 1, \
             5, 5, 5, 5, \
             5]
 
-for i in np.arange(0,3):
+for i in np.arange(1,3):
   molecule, restfreq, imsize, niter, spw = molecule_list[i], restfreq_list[i], imsize_list[i], niter_list[i], spw_list[i]
   
   if os.path.exists("./%s"%molecule):
