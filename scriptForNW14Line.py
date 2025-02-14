@@ -212,6 +212,75 @@ for linevis, imname in zip(linevis_list, imname_list):
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
 
+## Image outflow emission from CO, 13CO, C18O, SiO, SO
+
+import os
+import numpy as np
+molecule_list = ["CO_2_1", "SiO_5_4", "13CO_2_1", "C18O_2_1"]
+restfreq_list = ["230.5380GHz", "217.10498GHz", "220.3986842GHz", "219.5603541GHz"]
+imsize_list = [2500, 2500, 2500, 2500]
+niter_list = [1e6, 1e6, 1e6, 1e6]
+spw_list = [4, 1, 2, 3]
+
+for i in np.arange(1,3):
+  molecule, restfreq, imsize, niter, spw = molecule_list[i], restfreq_list[i], imsize_list[i], niter_list[i], spw_list[i]
+  
+  if os.path.exists("./%s"%molecule):
+    os.removedirs("./%s"%molecule)
+  else:
+    os.mkdir("./%s"%molecule)
+  
+  linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+  imname_list = ["./%s/cygxnw14_%s_X8203"%(molecule, molecule)]
+
+  ## Image line data for each date
+  ## Image Parameters
+  
+  for linevis, imname in zip(linevis_list, imname_list):
+    cell = '0.02arcsec'
+    weighting = 'briggs'
+    robust = 2.0
+    threshold = '1mJy'
+    restfreq = restfreq
+    start = '-80km/s'  ## Vsys ~5.5 km/s
+    nchan = 250
+    
+    tclean(vis = linevis,
+      imagename=imname,
+      specmode='cube',
+      deconvolver = 'multiscale',
+      spw = "%d"%spw,
+      niter = niter,
+      start = start,
+      nchan = nchan,
+      scales = [0,5,15,50],
+      imsize=imsize,
+      cell=cell,
+      restfreq = restfreq,
+      threshold=threshold,  
+      gridder='standard', 
+      weighting=weighting,
+      outframe = 'LSRK', 
+      interactive = False,
+      pblimit = 0.2,
+      robust = robust,
+      usemask = 'auto-multithresh',
+    ## b75 > 400m
+      sidelobethreshold = 2.5,
+      noisethreshold = 5.0,
+      minbeamfrac = 0.3,
+      lownoisethreshold = 1.5,
+      negativethreshold = 0.0,
+      fastnoise = True,
+      parallel = True)
+    
+    exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+    exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
+    print("Finish %s image."%molecule)
+
+
+
+
 ## Create CH3CN directory
 linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
 imname_list = ["./CH3CN_12_11/cygxnw14_ch3cn_12_11_k4_X4af", "./CH3CN_12_11/cygxnw14_ch3cn_12_11_k4_X8203"]
