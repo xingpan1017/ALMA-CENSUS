@@ -110,8 +110,8 @@ for myvis in myvis_list:
 
 ## Create CO_2_1 directory
 robust = 2.0
-linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line"]
-imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X8203_rob%.1f"%robust, "./CO_2_1/cygxnw14_CO_2_1_X4af_rob%.1f"%robust]
+linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X8203_rob%.1f"%robust]
 
 ## Image CO 2-1 for each date
 ## Image Parameters
@@ -121,8 +121,8 @@ for linevis, imname in zip(linevis_list, imname_list):
   imsize = 3200
   weighting = 'briggs'
   #robust = 0.5
-  threshold = '1mJy'
-  niter = 1000000
+  threshold = '0.1mJy'
+  niter = 10000000
   restfreq = '230.5380GHz'
   start = '-100km/s'  ## Vsys ~5.5 km/s
   nchan = 250
@@ -130,12 +130,13 @@ for linevis, imname in zip(linevis_list, imname_list):
   tclean(vis = linevis,
     imagename=imname,
     specmode='cube',
-    deconvolver = 'multiscale',
+    deconvolver = 'hogbom',
+    #deconvolver = 'multiscale',
     spw = '4', ## Only select spw4 to image, cover CO 2-1
     niter = niter,
     start = start,
     nchan = nchan,
-    scales = [0,5,15,50],
+    #scales = [0,5,15,50],
     imsize=imsize,
     cell=cell,
     restfreq = restfreq,
