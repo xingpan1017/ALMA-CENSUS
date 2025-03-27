@@ -121,22 +121,22 @@ for linevis, imname in zip(linevis_list, imname_list):
   imsize = 3200
   weighting = 'briggs'
   #robust = 0.5
-  threshold = '0.1mJy'
+  threshold = '1.0mJy'
   niter = 10000000
   restfreq = '230.5380GHz'
-  start = '-100km/s'  ## Vsys ~5.5 km/s
+  start = '-80km/s'  ## Vsys ~5.5 km/s
   nchan = 250
   
   tclean(vis = linevis,
     imagename=imname,
     specmode='cube',
-    deconvolver = 'hogbom',
-    #deconvolver = 'multiscale',
+    #deconvolver = 'hogbom',
+    deconvolver = 'multiscale',
     spw = '4', ## Only select spw4 to image, cover CO 2-1
     niter = niter,
     start = start,
     nchan = nchan,
-    #scales = [0,5,15,50],
+    scales = [0,5,15,50,150],
     imsize=imsize,
     cell=cell,
     restfreq = restfreq,
@@ -160,6 +160,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     parallel = True)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+  exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
 
 ## Create SiO_5_4 directory
 robust = 2.0
