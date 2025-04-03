@@ -117,15 +117,15 @@ imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X8203_rob%.1f"%robust]
 ## Image Parameters
 
 for linevis, imname in zip(linevis_list, imname_list):
-  cell = '0.015arcsec'
-  imsize = 3200
+  cell = '0.025arcsec'
+  imsize = 2000
   weighting = 'briggs'
   #robust = 0.5
   threshold = '1.0mJy'
   niter = 10000000
   restfreq = '230.5380GHz'
-  start = '-80km/s'  ## Vsys ~5.5 km/s
-  nchan = 250
+  start = '-75km/s'  ## Vsys ~5.5 km/s
+  nchan = 280
   
   tclean(vis = linevis,
     imagename=imname,
