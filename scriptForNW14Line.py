@@ -164,22 +164,22 @@ for linevis, imname in zip(linevis_list, imname_list):
 
 ## Create SiO_5_4 directory
 robust = 2.0
-linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line"]
-imname_list = ["./SiO_5_4/cygxnw14_SiO_5_4_X8203_rob%.1f"%robust, "./SiO_5_4/cygxnw14_SiO_5_4_X4af_rob%.1f"%robust]
+linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./SiO_5_4/cygxnw14_SiO_5_4_X8203_rob%.1f"%robust]
 
 ## Image SiO 5-4 for each date
 ## Image Parameters
 
 for linevis, imname in zip(linevis_list, imname_list):
-  cell = '0.015arcsec'
-  imsize = 3200
+  cell = '0.025arcsec'
+  imsize = 2000
   weighting = 'briggs'
   #robust = 0.5
   threshold = '1mJy'
-  niter = 1000000
+  niter = 10000000
   restfreq = '217.10498GHz'
-  start = '-80km/s'  ## Vsys ~5.5 km/s
-  nchan = 200
+  start = '-75km/s'  ## Vsys ~5.5 km/s
+  nchan = 280
   
   tclean(vis = linevis,
     imagename=imname,
@@ -213,6 +213,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     parallel = True)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+  exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
 
 ## Image outflow emission from CO, 13CO, C18O, SiO, SO
 
@@ -334,22 +335,24 @@ for linevis, imname in zip(linevis_list, imname_list):
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
 
 ## Create 13CO_2_1 directory
-linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
-imname_list = ["./13CO_2_1/cygxnw14_13CO_2_1_X4af", "./13CO_2_1/cygxnw14_13CO_2_1_X8203"]
+robust = 2.0
+
+linevis_list = [ "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
+imname_list = ["./13CO_2_1/cygxnw14_13CO_2_1_X8203"]
 
 ## Image 13CO 2-1 for each date
 ## Image Parameters
 
 for linevis, imname in zip(linevis_list, imname_list):
-  cell = '0.015arcsec'
-  imsize = 3200
+  cell = '0.025arcsec'
+  imsize = 2000
   weighting = 'briggs'
-  robust = 0.5
+  #robust = 0.5
   threshold = '1mJy'
-  niter = 1000000
+  niter = 10000000
   restfreq = '220.3986842GHz'
-  start = '-40km/s'  ## Vsys ~5.5 km/s
-  nchan = 150
+  start = '-80km/s'  ## Vsys ~5.5 km/s
+  nchan = 250
   
   tclean(vis = linevis,
     imagename=imname,
@@ -359,7 +362,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     niter = niter,
     start = start,
     nchan = nchan,
-    scales = [0,5,15,50],
+    scales = [0,5,15,50,150],
     imsize=imsize,
     cell=cell,
     restfreq = restfreq,
@@ -382,6 +385,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     fastnoise = True,)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+  exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
 
 ## Create C18O_2_1 directory
 !mkdir C18O_2_1
