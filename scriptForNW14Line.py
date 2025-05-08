@@ -122,7 +122,7 @@ for linevis, imname in zip(linevis_list, imname_list):
   weighting = 'briggs'
   #robust = 0.5
   threshold = '1.0mJy'
-  niter = 100000
+  niter = 10000000
   restfreq = '230.5380GHz'
   start = '-75km/s'  ## Vsys ~5.5 km/s
   nchan = 280
@@ -166,7 +166,7 @@ for linevis, imname in zip(linevis_list, imname_list):
 ## Create SiO_5_4 directory
 robust = 2.0
 linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
-imname_list = ["./SiO_5_4/cygxnw14_SiO_5_4_X8203_rob%.1f"%robust]
+imname_list = ["./SiO_5_4/cygxnw14_SiO_5_4_X8203_rob%.1f_uvtaper0.2"%robust]
 
 ## Image SiO 5-4 for each date
 ## Image Parameters
@@ -177,7 +177,7 @@ for linevis, imname in zip(linevis_list, imname_list):
   weighting = 'briggs'
   #robust = 0.5
   threshold = '1mJy'
-  niter = 10000000
+  niter = 1000000
   restfreq = '217.10498GHz'
   start = '-75km/s'  ## Vsys ~5.5 km/s
   nchan = 280
@@ -190,9 +190,10 @@ for linevis, imname in zip(linevis_list, imname_list):
     niter = niter,
     start = start,
     nchan = nchan,
-    scales = [0,5,15,50],
+    scales = [0,5,10,30,50],
     imsize=imsize,
     cell=cell,
+    uvtaper='0.2arcsec',
     restfreq = restfreq,
     #phasecenter = pc,
     threshold=threshold,  
