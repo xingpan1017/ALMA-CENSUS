@@ -172,8 +172,8 @@ imname_list = ["./SiO_5_4/cygxnw14_SiO_5_4_X8203_rob%.1f_uvtaper0.2"%robust]
 ## Image Parameters
 
 for linevis, imname in zip(linevis_list, imname_list):
-  cell = '0.025arcsec'
-  imsize = 2000
+  cell = '0.04arcsec'
+  imsize = 1200
   weighting = 'briggs'
   #robust = 0.5
   threshold = '1mJy'
