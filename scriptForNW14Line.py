@@ -156,7 +156,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     noisethreshold = 5.0,
     minbeamfrac = 0.3,
     lownoisethreshold = 1.5,
-    negativethreshold = 0.0,
+    negativethreshold =  7.0, ## 0.0 for continuum, 7.0 for line imaging
     fastnoise = True,
     parallel = True)
   
