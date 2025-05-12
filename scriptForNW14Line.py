@@ -177,7 +177,7 @@ for linevis, imname in zip(linevis_list, imname_list):
   weighting = 'briggs'
   #robust = 0.5
   threshold = '1mJy'
-  niter = 1000000
+  niter = 10000000
   restfreq = '217.10498GHz'
   start = '-75km/s'  ## Vsys ~5.5 km/s
   nchan = 280
@@ -210,7 +210,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     noisethreshold = 5.0,
     minbeamfrac = 0.3,
     lownoisethreshold = 1.5,
-    negativethreshold = 0.0,
+    negativethreshold =  7.0, ## 0.0 for continuum, 7.0 for line imaging
     fastnoise = True,
     parallel = True)
   
