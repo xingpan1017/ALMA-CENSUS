@@ -110,24 +110,23 @@ for myvis in myvis_list:
 
 ## Create CO_2_1 directory
 robust = 2.0
-linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
-imname_list = ["./CO_2_1/cygxnw14_CO_2_1_X8203_rob%.1f_uvtaper0.2"%robust]
+linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line"]
+imname = "./CO_2_1/cygxnw14_CO_2_1_comb_uvtaper0.2"
 
 ## Image CO 2-1 for each date
 ## Image Parameters
 
-for linevis, imname in zip(linevis_list, imname_list):
-  cell = '0.04arcsec'
-  imsize = 1200
-  weighting = 'briggs'
-  #robust = 0.5
-  threshold = '1.0mJy'
-  niter = 10000000
-  restfreq = '230.5380GHz'
-  start = '-75km/s'  ## Vsys ~5.5 km/s
-  nchan = 280
+cell = '0.03arcsec'
+imsize = 1600
+weighting = 'briggs'
+#robust = 0.5
+threshold = '1.0mJy'
+niter = 1000000
+restfreq = '230.5380GHz'
+start = '-75km/s'  ## Vsys ~5.5 km/s
+nchan = 280
   
-  tclean(vis = linevis,
+tclean(vis = linevis_list,
     imagename=imname,
     specmode='cube',
     #deconvolver = 'hogbom',
@@ -149,7 +148,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     outframe = 'LSRK', 
     interactive = False,
     pblimit = 0.1,
-    robust = robust,
+    #robust = robust,
     usemask = 'auto-multithresh',
   ## b75 > 400m
     sidelobethreshold = 2.5,
@@ -160,8 +159,8 @@ for linevis, imname in zip(linevis_list, imname_list):
     fastnoise = True,
     parallel = True)
   
-  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
-  exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
 
 ## Create SiO_5_4 directory
 robust = 2.0
