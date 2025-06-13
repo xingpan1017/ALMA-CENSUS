@@ -110,7 +110,7 @@ for myvis in myvis_list:
 
 ## Create CO_2_1 directory
 robust = 2.0
-linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line"]
+linevis_list = ["../calibrated_rtdc12/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc12/cygxnw14_A002_X1096e27_X4af.ms.line"]
 imname = "./CO_2_1/cygxnw14_CO_2_1_comb_uvtaper0.2"
 
 ## Image CO 2-1 for each date
