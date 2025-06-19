@@ -110,7 +110,7 @@ for myvis in myvis_list:
 
 ## Create CO_2_1 directory
 robust = 2.0
-linevis_list = ["../calibrated_rtdc12/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc12/cygxnw14_A002_X1096e27_X4af.ms.line"]
+linevis_list = ["../calibrated_rtdc10/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc10/cygxnw14_A002_X1096e27_X4af.ms.line"]
 imname = "./CO_2_1/cygxnw14_CO_2_1_comb_uvtaper0.2"
 
 ## Image CO 2-1 for each date
@@ -121,7 +121,7 @@ imsize = 1600
 weighting = 'briggs'
 #robust = 0.5
 threshold = '1.0mJy'
-niter = 100000
+niter = 1000000
 restfreq = '230.5380GHz'
 start = '-75km/s'  ## Vsys ~5.5 km/s
 nchan = 280
@@ -138,7 +138,7 @@ tclean(vis = linevis_list,
     scales = [0,5,10,30,50],
     imsize=imsize,
     cell=cell,
-    uvtaper='0.2arcsec',
+    uvtaper='0.15arcsec',
     restfreq = restfreq,
     #phasecenter = pc,
     threshold=threshold,  
@@ -163,25 +163,24 @@ exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=T
 exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
 
 ## Create SiO_5_4 directory
-robust = 2.0
-linevis_list = ["../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
-imname_list = ["./SiO_5_4/cygxnw14_SiO_5_4_X8203_rob%.1f_uvtaper0.2"%robust]
+#robust = 2.0
+linevis_list = ["../calibrated_rtdc10/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc10/cygxnw14_A002_X1096e27_X4af.ms.line"]
+imname = "./SiO_5_4/cygxnw14_SiO_5_4_comb_uvtaper0.15"
 
 ## Image SiO 5-4 for each date
 ## Image Parameters
 
-for linevis, imname in zip(linevis_list, imname_list):
-  cell = '0.04arcsec'
-  imsize = 1200
-  weighting = 'briggs'
-  #robust = 0.5
-  threshold = '1mJy'
-  niter = 10000000
-  restfreq = '217.10498GHz'
-  start = '-75km/s'  ## Vsys ~5.5 km/s
-  nchan = 280
+cell = '0.03arcsec'
+imsize = 1600
+weighting = 'briggs'
+#robust = 0.5
+threshold = '1.0mJy'
+niter = 1000000
+restfreq = '217.10498GHz'
+start = '-75km/s'  ## Vsys ~5.5 km/s
+nchan = 280
   
-  tclean(vis = linevis,
+  tclean(vis = linevis_list,
     imagename=imname,
     specmode='cube',
     deconvolver = 'multiscale',
@@ -192,7 +191,7 @@ for linevis, imname in zip(linevis_list, imname_list):
     scales = [0,5,10,30,50],
     imsize=imsize,
     cell=cell,
-    uvtaper='0.2arcsec',
+    uvtaper='0.15arcsec',
     restfreq = restfreq,
     #phasecenter = pc,
     threshold=threshold,  
@@ -213,8 +212,8 @@ for linevis, imname in zip(linevis_list, imname_list):
     fastnoise = True,
     parallel = True)
   
-  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
-  exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
 
 ## Image outflow emission from CO, 13CO, C18O, SiO, SO
 
