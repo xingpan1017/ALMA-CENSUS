@@ -109,7 +109,7 @@ for myvis in myvis_list:
         fitorder=0)
 
 ## Create CO_2_1 directory
-robust = 2.0
+#robust = 2.0
 linevis_list = ["../calibrated_rtdc10/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc10/cygxnw14_A002_X1096e27_X4af.ms.line"]
 imname = "./CO_2_1/cygxnw14_CO_2_1_comb_uvtaper0.2"
 
@@ -201,7 +201,7 @@ nchan = 280
     outframe = 'LSRK', 
     interactive = False,
     pblimit = 0.1,
-    robust = robust,
+    # robust = robust,
     usemask = 'auto-multithresh',
   ## b75 > 400m
     sidelobethreshold = 2.5,
@@ -268,7 +268,7 @@ for i in range(2):
     outframe = 'LSRK', 
     interactive = False,
     pblimit = 0.1,
-    robust = robust,
+    #robust = robust,
     usemask = 'auto-multithresh',
   ## b75 > 400m
     sidelobethreshold = 2.5,
