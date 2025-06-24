@@ -180,7 +180,7 @@ restfreq = '217.10498GHz'
 start = '-75km/s'  ## Vsys ~5.5 km/s
 nchan = 280
   
-  tclean(vis = linevis_list,
+tclean(vis = linevis_list,
     imagename=imname,
     specmode='cube',
     deconvolver = 'multiscale',
