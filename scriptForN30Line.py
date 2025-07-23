@@ -91,7 +91,7 @@ for i in range(len(molecule_list)):
   else:
     os.mkdir("./%s"%molecule)
   
-  linevis_list = ["../calibrated/cygxn30_X176c0.ms"]
+  linevis_list = ["./cygxn30_X176c0_line.ms"]
   imname = "./%s/cygxn30_%s"%(molecule, molecule)
 
   ## Image line data for each date
