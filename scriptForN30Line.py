@@ -62,7 +62,7 @@ for i in range(6):
 ##############################################################################
 ## Line-free channels
 ## NW14 e1 is a line-rich source 
-fc = '0:100~200;250~620;745~945,1:20~300;400~450;830~950,2:370~450;500~580;830~900,3:200~400;560~850,4:,5:'
+fc = '0:100~200;250~620;745~945,1:20~300;400~450;830~950,2:370~450;500~580;830~900,3:200~400;560~850,4:360~440;540~600;650~830;1070~1220;1320~1470;1515~1650;1700~1750,5:'
 
 ## Substract continuum from visibility data
 for myvis in myvis_list:
@@ -75,12 +75,13 @@ for myvis in myvis_list:
 ## Pipeline for imaging line emission with narrow velocity range
 import os
 import numpy as np
-molecule_list = ["CH3OH_4_2_3_1", "H2CO_3_2_2_1", "H2CO_3_21_2_20", "DCN_3_2", "13CN_2_1", "H2CN_3_2", "(CH3)2CO_22_21", "13CO_2_1", "34SO2_11_10", "C18O_2_1", "HNCO_10_9"]
+molecule_list = ["CH3OH_4_2_3_1", "H2CO_3_2_2_1", "H2CO_3_21_2_20", "DCN_3_2", "13CN_2_1", "H2CN_3_2", "(CH3)2CO_22_21", "13CO_2_1",\
+                 "34SO2_11_10", "C18O_2_1", "HNCO_10_9", "CH3OCH3_25_4_25_3", "(CH3)2CO_23_22", "CH3OCH3_17_16", "HOONO2_28_27", "CH3OH_22_4_21_5"]
 ## (CH3)2CO has hyperfine structures, Many ladders of CH3CN
 
-restfreq_list = ["218.440063GHz", "218.475632GHz", "218.760066GHz", "217.2385378GHz", "217.301175GHz", "220.260004GHz", "220.3618812GHz", "220.3986842GHz", "219.3550091GHz", \
-                 "219.5603541GHz", "219.73385GHz"]
-spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3]
+restfreq_list = ["218.440063GHz", "218.475632GHz", "218.760066GHz", "217.2385378GHz", "217.301175GHz", "220.260004GHz", "220.3618812GHz", "220.3986842GHz",\
+                 "219.3550091GHz", "219.5603541GHz", "219.73385GHz", "230.142683GHz", "230.1767274GHz", "230.2337577GHz", "230.317788GHz", "230.368763GHz"]
+spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4]
 
 for i in range(len(molecule_list)):
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
