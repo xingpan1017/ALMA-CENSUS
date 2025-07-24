@@ -61,8 +61,9 @@ for i in range(6):
 ## Line-free channels
 ##fc = '0:100~200;250~620;745~920,1:160~300;590~690,2:370~450;500~580;750~940,3:300~400;560~600,4:650~900;1100~1200;1300~1450,5:1000~1050;1100~1250;1500~1650'
 
+## Since CASA 6.6.1 version has different uvcontsub function and does not support combing spw fitting. Therefore, we should split all the spw and subtract the continuum, seperately.
 ## Split seperate spectral window
-spw_list = [0]#,1,2,3,4,5]
+spw_list = [1,2,3,4,5]
 for spw in spw_list:
 	split(vis="../calibrated/cygxn30_X176c0.ms",
       		outputvis="cygxn30_X176c0.spw%s.ms"%spw,
@@ -70,8 +71,7 @@ for spw in spw_list:
 
 spw_ms_list = ["cygxn30_X176c0.spw%s.ms"%spw for spw in spw_list]
 # Line-free channels
-#fc = '0:100~600;750~900,1:500~700;760~950,2:280~590;680~900,3:150~430;500~850,4:100~850;1100~1800,5:480~700'
-fc_spw_list = ["0:100~200;250~620;745~920"]#, "0:500~700;760~950", "0:280~590;680~900", "0:150~430;500~850", "0:100~850;1100~1800", "0:480~700"]
+fc_spw_list = ["0:160~300;590~690", "0:370~450;500~580;750~940", "0:300~400;560~600", "0:650~900;1100~1200;1300~1450", "0:1000~1050;1100~1250;1500~1650"]
 
 for fc_spw, spw_ms in zip(fc_spw_list, spw_ms_list):
     uvcontsub(vis=spw_ms,
@@ -79,13 +79,6 @@ for fc_spw, spw_ms in zip(fc_spw_list, spw_ms_list):
         fitspec=fc_spw, 
         fitorder=0)
 
-## Substract continuum from visibility data
-for myvis in myvis_list:
-    uvcontsub(vis=myvis,
-        outputvis=myvis+".line",
-        fitspec=fc, 
-        fitorder=0,
-        datacolumn='corrected')
 
 ################################################################################
 ## Pipeline for imaging line emission with narrow velocity range
