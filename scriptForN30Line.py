@@ -37,7 +37,6 @@ for i in range(6):
         gridder = 'standard',
         specmode = 'cube',
         spw = '%d'%i,
-#        #width = '5km/s',
         stokes = 'I',
         robust = robust,
         weighting = wtg,
@@ -55,21 +54,38 @@ for i in range(6):
         #fastnoise = True,
         #pbmask = 0.3
         )
-
-    exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
-
+    
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
 
 ##############################################################################
 ## Line-free channels
-##fc = '0:100~200;250~620;745~920,1:100~300;400~450;830~940,2:370~450;500~580;830~900,3:200~400;560~850,4:360~440;540~600;650~830;1070~1220;1320~1470;1515~1650;1700~1750,5:750~840;920~950;990~1040;1840~1880'
-fc = "0:100~600;750~900,1:500~700;760~950,2:280~590;680~900,3:150~430;500~850,4:100~850;1100~1800,5:480~700"
+##fc = '0:100~200;250~620;745~920,1:160~300;590~690,2:370~450;500~580;750~940,3:300~400;560~600,4:650~900;1100~1200;1300~1450,5:1000~1050;1100~1250;1500~1650'
 
-myvis = "../calibrated/cygxn30_X176c0.ms"
-## Substract continuum from visibility data
-uvcontsub(vis=myvis,
-        outputvis="./cygxn30_X176c0.contsub.ms",
-        fitspec=fc, 
+## Split seperate spectral window
+spw_list = [0]#,1,2,3,4,5]
+for spw in spw_list:
+	split(vis="../calibrated/cygxn30_X176c0.ms",
+      		outputvis="cygxn30_X176c0.spw%s.ms"%spw,
+      		spw=spw, datacolumn='corrected')
+
+spw_ms_list = ["cygxn30_X176c0.spw%s.ms"%spw for spw in spw_list]
+# Line-free channels
+#fc = '0:100~600;750~900,1:500~700;760~950,2:280~590;680~900,3:150~430;500~850,4:100~850;1100~1800,5:480~700'
+fc_spw_list = ["0:100~200;250~620;745~920"]#, "0:500~700;760~950", "0:280~590;680~900", "0:150~430;500~850", "0:100~850;1100~1800", "0:480~700"]
+
+for fc_spw, spw_ms in zip(fc_spw_list, spw_ms_list):
+    uvcontsub(vis=spw_ms,
+        outputvis=spw_ms+".contsub",
+        fitspec=fc_spw, 
         fitorder=0)
+
+## Substract continuum from visibility data
+for myvis in myvis_list:
+    uvcontsub(vis=myvis,
+        outputvis=myvis+".line",
+        fitspec=fc, 
+        fitorder=0,
+        datacolumn='corrected')
 
 ################################################################################
 ## Pipeline for imaging line emission with narrow velocity range
