@@ -61,13 +61,13 @@ for i in range(6):
 
 ##############################################################################
 ## Line-free channels
-fc = '0:100~200;250~620;745~945,1:20~300;400~450;830~950,2:370~450;500~580;830~900,3:200~400;560~850,4:360~440;540~600;650~830;1070~1220;1320~1470;1515~1650;1700~1750,5:72~100;750~840;920~950;990~1040;1840~1880'
+##fc = '0:100~200;250~620;745~920,1:100~300;400~450;830~940,2:370~450;500~580;830~900,3:200~400;560~850,4:360~440;540~600;650~830;1070~1220;1320~1470;1515~1650;1700~1750,5:750~840;920~950;990~1040;1840~1880'
+fc = "0:100~600;750~900,1:500~700;760~950,2:280~590;680~900,3:150~430;500~850,4:100~850;1100~1800,5:480~700"
 
-myvis_list = ["../calibrated/cygxn30_X176c0.ms"]
+myvis = "../calibrated/cygxn30_X176c0.ms"
 ## Substract continuum from visibility data
-for myvis in myvis_list:
-    uvcontsub(vis=myvis,
-        outputvis="./cygxn30_X176c0_line",
+uvcontsub(vis=myvis,
+        outputvis="./cygxn30_X176c0.contsub.ms",
         fitspec=fc, 
         fitorder=0)
 
@@ -99,7 +99,7 @@ for i in range(len(molecule_list)):
   weighting = 'briggs'
   robust = 0.5
   threshold = '1mJy'
-  start = '-30km/s'  ## Vsys ~5.5 km/s
+  start = '-25km/s'  ## Vsys ~5.5 km/s
   nchan = 100
     
   tclean(vis = linevis_list,
