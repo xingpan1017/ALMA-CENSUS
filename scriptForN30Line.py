@@ -100,7 +100,7 @@ for i in range(len(molecule_list)):
   else:
     os.mkdir("./%s"%molecule)
   
-  linevis_list = ["./cygxn30_X176c0_line.ms"]
+  linevis_list = ["./cygxn30_X176c0.spw%s.ms.contsub"%spw]
   imname = "./%s/cygxn30_%s"%(molecule, molecule)
 
   ## Image line data for each date
@@ -108,8 +108,8 @@ for i in range(len(molecule_list)):
   weighting = 'briggs'
   robust = 0.5
   threshold = '1mJy'
-  start = '-25km/s'  ## Vsys ~5.5 km/s
-  nchan = 100
+  start = '-30km/s'  ## Vsys ~5.5 km/s
+  nchan = 120
     
   tclean(vis = linevis_list,
     imagename=imname,
