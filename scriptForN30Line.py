@@ -92,6 +92,16 @@ restfreq_list = ["218.440063GHz", "218.475632GHz", "218.760066GHz", "217.2385378
                  "219.3550091GHz", "219.5603541GHz", "219.73385GHz", "230.142683GHz", "230.1767274GHz", "230.2337577GHz", "230.317788GHz", "230.368763GHz", "230.6725581GHz"]
 spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4]
 
+import os
+import numpy as np
+molecule_list = ["DCN_3_2", "13CN_2_1", "H2CN_3_2", "(CH3)2CO_22_21", "13CO_2_1",\
+                 "34SO2_11_10", "C18O_2_1", "HNCO_10_9", "CH3OCH3_25_4_25_3", "(CH3)2CO_23_22", "CH3OCH3_17_16", "HOONO2_28_27", "CH3OH_22_4_21_5", "C2H5OH_13_2_12_2"]
+## (CH3)2CO has hyperfine structures, Many ladders of CH3CN
+
+restfreq_list = ["217.2385378GHz", "217.301175GHz", "220.260004GHz", "220.3618812GHz", "220.3986842GHz",\
+                 "219.3550091GHz", "219.5603541GHz", "219.73385GHz", "230.142683GHz", "230.1767274GHz", "230.2337577GHz", "230.317788GHz", "230.368763GHz", "230.6725581GHz"]
+spw_list = [1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4]
+
 for i in range(len(molecule_list)):
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
   
