@@ -115,7 +115,7 @@ for i in range(len(molecule_list)):
     imagename=imname,
     specmode='cube',
     deconvolver = 'multiscale',
-    spw = "%d"%spw,
+    #:spw = "%d"%spw,
     niter = 1000000,
     start = start,
     nchan = nchan,
