@@ -444,7 +444,7 @@ for linevis, imname in zip(linevis_list, imname_list):
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
 
-
+##################################################################################################################################
 ## Create CH3OH_4_2_3_1 directory
 !mkdir CH3OH_4_2_3_1
 
@@ -555,6 +555,77 @@ for linevis, imname in zip(linevis_list, imname_list):
     fastnoise = True,)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+
+
+import os
+import numpy as np
+molecule_list = ["CH3OH_22_4_21_5", "CH3OH_18_3_17_4", "CH3OH_10_-3_11_-2"]
+
+restfreq_list = ["230.368763GHz", "232.783446GHz", "232.945797GHz"]
+spw_list = [4, 5, 5]
+
+for i in range(len(molecule_list)):
+  molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
+  
+  if os.path.exists("./%s"%molecule):
+    os.removedirs("./%s"%molecule)
+  else:
+    os.mkdir("./%s"%molecule)
+  
+  linevis_list = ["../calibrated_rtdc10/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated_rtdc10/cygxnw14_A002_X1097a87_X8203.ms.line"]
+  imname = "./%s/cygxnw14_%s"%(molecule, molecule)
+
+  ## Image line data for each date
+  ## Image Parameters
+  weighting = 'briggs'
+  robust = 0.5
+  threshold = '1mJy'
+  start = '-30km/s'  ## Vsys ~5.5 km/s
+  if spw == 5:
+    nchan = 120
+  else:
+    nchan = 200
+    
+  tclean(vis = linevis_list,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    spw = "%d"%spw,
+    niter = 1000000,
+    start = start,
+    nchan = nchan,
+    robust = robust,
+    scales = [0,5,10,30,50],
+    imsize=800,
+    cell='0.015arcsec',
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    #robust = robust,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold =  7.0, ## 0.0 for continuum, 7.0 for line imaging
+    fastnoise = True,
+    parallel = True)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+  exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
+  print("Finish %s image."%molecule)
+
+
+
+############################################################################################################################
 
 ## Create DCN_3_2 directory
 !mkdir DCN_3_2
