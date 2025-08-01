@@ -560,10 +560,10 @@ for linevis, imname in zip(linevis_list, imname_list):
 
 import os
 import numpy as np
-molecule_list = ["CH3OH_22_4_21_5", "CH3OH_18_3_17_4", "CH3OH_10_-3_11_-2"]
+molecule_list = ["CH3OH_22_4_21_5", "CH3OH_18_3_17_4", "CH3OH_10_-3_11_-2", "CH3OH_10_2_9_3"]
 
-restfreq_list = ["230.368763GHz", "232.783446GHz", "232.945797GHz"]
-spw_list = [4, 5, 5]
+restfreq_list = ["230.368763GHz", "232.783446GHz", "232.945797GHz", "232.418521GHz"]
+spw_list = [4, 5, 5, 5]
 
 for i in range(len(molecule_list)):
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
