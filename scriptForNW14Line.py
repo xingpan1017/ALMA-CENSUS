@@ -215,6 +215,59 @@ tclean(vis = linevis_list,
 exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
 exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
 
+### High res SiO data
+## Create SiO_5_4 directory
+linevis_list = ["../calibrated_rtdc10/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc10/cygxnw14_A002_X1096e27_X4af.ms.line"]
+imname = "./SiO_5_4/cygxnw14_SiO_5_4_hires"
+
+## Image SiO 5-4 for each date
+## Image Parameters
+
+cell = '0.015arcsec'
+imsize = 800
+weighting = 'briggs'
+#robust = 0.5
+threshold = '1.0mJy'
+niter = 1000000
+restfreq = '217.10498GHz'
+start = '-75km/s'  ## Vsys ~5.5 km/s
+nchan = 280
+  
+tclean(vis = linevis_list,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    spw = '1', ## Only select spw1 to image, cover SiO 5-4
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,10,30,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = 0.5,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold =  7.0, ## 0.0 for continuum, 7.0 for line imaging
+    fastnoise = True,
+    parallel = True)
+  
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
+
+
 ## Image outflow emission from CO, 13CO, C18O, SiO, SO
 
 import os
@@ -335,6 +388,57 @@ for linevis, imname in zip(linevis_list, imname_list):
     fastnoise = True,)
   
   exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+
+### Cover all CH3CN transitions
+## Image Parameters
+linevis_list = ["../calibrated_rtdc10/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc10/cygxnw14_A002_X1096e27_X4af.ms.line"]
+imname = "./CH3CN_12_11/cygxnw14_CH3CN_12_11_k4_k8"
+
+cell = '0.015arcsec'
+imsize = 800
+weighting = 'briggs'
+#robust = 0.5
+threshold = '1.0mJy'
+niter = 1000000
+restfreq = '220.6792869GHz'
+start = '220.700GHz'  ## Vsys ~5.5 km/s
+nchan = 550
+  
+tclean(vis = linevis_list,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    spw = '1', ## Only select spw1 to image, cover SiO 5-4
+    niter = niter,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,10,30,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = 0.5,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold =  7.0, ## 0.0 for continuum, 7.0 for line imaging
+    fastnoise = True,
+    parallel = True)
+  
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
+
+
 
 ## Create 13CO_2_1 directory
 robust = 2.0
