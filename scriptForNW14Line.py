@@ -401,14 +401,14 @@ weighting = 'briggs'
 threshold = '1.0mJy'
 niter = 1000000
 restfreq = '220.6792869GHz'
-start = '220.700GHz'  ## Vsys ~5.5 km/s
+start = '220.4354GHz'  ## Vsys ~5.5 km/s
 nchan = 550
   
 tclean(vis = linevis_list,
     imagename=imname,
     specmode='cube',
     deconvolver = 'multiscale',
-    spw = '1', ## Only select spw1 to image, cover SiO 5-4
+    spw = '2', ## Only select spw1 to image, cover SiO 5-4
     niter = niter,
     start = start,
     nchan = nchan,
