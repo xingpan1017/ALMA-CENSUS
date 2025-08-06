@@ -338,6 +338,67 @@ for i in range(2):
 
 
 
+## Image high resolution 13CO, C18O emission
+import os
+import numpy as np
+molecule_list = ["13CO_2_1", "C18O_2_1", "CO_2_1"]
+restfreq_list = ["220.3986842GHz", "219.5603541GHz", '230.5380GHz']
+spw_list = [2, 3, 4]
+
+for i in range(2):
+  molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
+  
+  linevis_list = ["../calibrated_rtdc10/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc10/cygxnw14_A002_X1096e27_X4af.ms.line"]
+  imname = "./%s/cygxnw14_%s_hires"%(molecule, molecule)
+
+  ## Image line data for each date
+  ## Image Parameters
+
+  cell = '0.015arcsec'
+  imsize = 1600
+  niter = 1000000
+  weighting = 'briggs'
+  threshold = '1mJy'
+  restfreq = restfreq
+  start = '-30km/s'  ## Vsys ~5.5 km/s
+  nchan = 100
+    
+  tclean(vis = linevis_list,
+    imagename=imname,
+    specmode='cube',
+    deconvolver = 'multiscale',
+    spw = "%d"%spw,
+    niter = 1000000,
+    start = start,
+    nchan = nchan,
+    scales = [0,5,10,30,50],
+    imsize=imsize,
+    cell=cell,
+    restfreq = restfreq,
+    #phasecenter = pc,
+    threshold=threshold,  
+    #nterms=2, 
+    gridder='standard', 
+    weighting=weighting,
+    outframe = 'LSRK', 
+    interactive = False,
+    pblimit = 0.1,
+    robust = 0.5,
+    usemask = 'auto-multithresh',
+  ## b75 > 400m
+    sidelobethreshold = 2.5,
+    noisethreshold = 5.0,
+    minbeamfrac = 0.3,
+    lownoisethreshold = 1.5,
+    negativethreshold =  7.0, ## 0.0 for continuum, 7.0 for line imaging
+    fastnoise = True,
+    parallel = True)
+  
+  exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", velocity=True, overwrite=True)
+  exportfits(imagename=imname+".residual", fitsimage=imname+".residual.fits", velocity=True, overwrite=True)
+  print("Finish %s image."%molecule)
+
+
 
 ## Create CH3CN directory
 linevis_list = ["../calibrated/cygxnw14_A002_X1096e27_X4af.ms.line", "../calibrated/cygxnw14_A002_X1097a87_X8203.ms.line"]
