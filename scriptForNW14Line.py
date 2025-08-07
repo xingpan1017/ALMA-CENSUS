@@ -345,7 +345,7 @@ molecule_list = ["13CO_2_1", "C18O_2_1", "CO_2_1"]
 restfreq_list = ["220.3986842GHz", "219.5603541GHz", '230.5380GHz']
 spw_list = [2, 3, 4]
 
-for i in range(2):
+for i in range(len(molecule_list)):
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
   
   linevis_list = ["../calibrated_rtdc10/cygxnw14_A002_X1097a87_X8203.ms.line", "../calibrated_rtdc10/cygxnw14_A002_X1096e27_X4af.ms.line"]
