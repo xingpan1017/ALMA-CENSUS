@@ -461,7 +461,7 @@ weighting = 'briggs'
 #robust = 0.5
 threshold = '1.0mJy'
 niter = 1000000
-restfreq = '220.6792869GHz'
+restfreq = '220.6792874GHz'
 start = '220.4354GHz'  ## Vsys ~5.5 km/s
 nchan = 550
   
