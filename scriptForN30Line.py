@@ -85,14 +85,18 @@ for fc_spw, spw_ms in zip(fc_spw_list, spw_ms_list):
 import os
 import numpy as np
 molecule_list = ["CH3OH_4_2_3_1", "H2CO_3_2_2_1", "H2CO_3_21_2_20", "DCN_3_2", "13CN_2_1", "H2CN_3_2", "(CH3)2CO_22_21", "13CO_2_1",\
-                 "34SO2_11_10", "C18O_2_1", "HNCO_10_9", "CH3OCH3_25_4_25_3", "(CH3)2CO_23_22", "CH3OCH3_17_16", "HOONO2_28_27", "CH3OH_22_4_21_5", "C2H5OH_13_2_12_2"]
+                 "34SO2_11_10", "C18O_2_1", "HNCO_10_9", "CH3OCH3_25_4_25_3", "(CH3)2CO_23_22", "CH3OCH3_17_16", "HOONO2_28_27", "CH3OH_22_4_21_5", "C2H5OH_13_2_12_2",\
+				"CH3OH_18_3_17_4", "CH3OH_10_-3_11_-2", "CH3OH_10_2_9_3"]
 ## (CH3)2CO has hyperfine structures, Many ladders of CH3CN
 
 restfreq_list = ["218.440063GHz", "218.475632GHz", "218.760066GHz", "217.2385378GHz", "217.301175GHz", "220.260004GHz", "220.3618812GHz", "220.3986842GHz",\
-                 "219.3550091GHz", "219.5603541GHz", "219.73385GHz", "230.142683GHz", "230.1767274GHz", "230.2337577GHz", "230.317788GHz", "230.368763GHz", "230.6725581GHz"]
-spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4]
+                 "219.3550091GHz", "219.5603541GHz", "219.73385GHz", "230.142683GHz", "230.1767274GHz", "230.2337577GHz", "230.317788GHz", "230.368763GHz", "230.6725581GHz",\
+				"232.783446GHz", "232.945797GHz", "232.418521GHz"]
+spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5]
 
-for i in range(len(molecule_list)):
+start_index, end_index = 17, 19
+
+for i in np.arange(start_index, end_index+1):
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
   
   if os.path.exists("./%s"%molecule):
