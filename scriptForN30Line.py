@@ -94,7 +94,7 @@ restfreq_list = ["218.440063GHz", "218.475632GHz", "218.760066GHz", "217.2385378
 				"232.783446GHz", "232.945797GHz", "232.418521GHz", "217.104919GHz", "220.6792874GHz"]
 spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 1, 2]
 
-start_index, end_index = 21, 21
+start_index, end_index = 20, 21
 
 for i in np.arange(start_index, end_index+1):
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
