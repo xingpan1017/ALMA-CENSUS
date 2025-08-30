@@ -116,6 +116,9 @@ for i in np.arange(start_index, end_index+1):
   if molecule in ["SiO_5_4"]:
 	  start = "-60km/s"
 	  nchan = 200
+  elif molecule in ["CH3CN_12_11_k4_k8"]:
+	  start = '220.4354GHz'  ## Vsys ~5.5 km/s
+	  nchan = 550
   else:
 	  start = '-30km/s'  ## Vsys ~5.5 km/s
 	  nchan = 120
