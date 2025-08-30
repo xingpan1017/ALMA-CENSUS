@@ -113,7 +113,7 @@ for i in np.arange(start_index, end_index+1):
   robust = 0.5
   threshold = '1mJy'
 
-  if moleculein ["SiO_5_4"]:
+  if molecule in ["SiO_5_4"]:
 	  start = "-60km/s"
 	  nchan = 200
   else:
