@@ -725,12 +725,13 @@ for linevis, imname in zip(linevis_list, imname_list):
 
 import os
 import numpy as np
-molecule_list = ["CH3OH_22_4_21_5", "CH3OH_18_3_17_4", "CH3OH_10_-3_11_-2", "CH3OH_10_2_9_3"]
+molecule_list = ["CH3OH_22_4_21_5", "CH3OH_18_3_17_4", "CH3OH_10_-3_11_-2", "CH3OH_10_2_9_3", "CH3OH_4_2_3_1", "H30alpha"]
 
-restfreq_list = ["230.368763GHz", "232.783446GHz", "232.945797GHz", "232.418521GHz"]
-spw_list = [4, 5, 5, 5]
+restfreq_list = ["230.368763GHz", "232.783446GHz", "232.945797GHz", "232.418521GHz", "218.440063GHz", "231.90092784GHz"]
+spw_list = [4, 5, 5, 5, 0, 5]
 
-for i in range(len(molecule_list)):
+#for i in range(len(molecule_list)):
+for i in [4, 5]:
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
   
   if os.path.exists("./%s"%molecule):
