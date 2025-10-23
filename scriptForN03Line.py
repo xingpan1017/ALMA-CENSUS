@@ -71,7 +71,7 @@ for spw in spw_list:
 
 spw_ms_list = ["cygxn03_X176c0.spw%s.ms"%spw for spw in spw_list]
 # Line-free channels
-fc_spw_list = ["0:100~600;760~940", "0:370~450;500~580;750~940", "0:300~400;560~600", "0:650~900;1100~1200;1300~1450", "0:1000~1050;1100~1250;1500~1650"]
+fc_spw_list = ["0:100~600;760~940", "0:10~330;370~450;500~700", "0:300~400;560~600", "0:650~900;1100~1200;1300~1450", "0:1000~1050;1100~1250;1500~1650"]
 
 for fc_spw, spw_ms in zip(fc_spw_list, spw_ms_list):
     uvcontsub(vis=spw_ms,
