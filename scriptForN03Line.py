@@ -8,7 +8,7 @@
 #############################################################################
 ## Generate linecube for each spw
 #############################################################################
-## cd /reduction/xingpan/ALMA/CENSUS/maps/N30/Line
+## cd /reduction/xingpan/ALMA/CENSUS/maps/N03/Line
 ## Restore .ms file before continuum flag
 myvis_list = ["../calibrated/cygxn03_X176c0.ms"]
 
@@ -56,3 +56,25 @@ for i in range(6):
         )
     
     exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+
+##############################################################################
+## Line-free channels
+##fc = '0:100~200;250~620;745~920,1:160~300;590~690,2:370~450;500~580;750~940,3:300~400;560~600,4:650~900;1100~1200;1300~1450,5:1000~1050;1100~1250;1500~1650'
+
+## Since CASA 6.6.1 version has different uvcontsub function and does not support combing spw fitting. Therefore, we should split all the spw and subtract the continuum, seperately.
+## Split seperate spectral window
+spw_list = [1,2,3,4,5]
+for spw in spw_list:
+	split(vis="../calibrated/cygxn03_X176c0.ms",
+      		outputvis="cygxn03_X176c0.spw%s.ms"%spw,
+      		spw=spw, datacolumn='corrected')
+
+spw_ms_list = ["cygxn03_X176c0.spw%s.ms"%spw for spw in spw_list]
+# Line-free channels
+fc_spw_list = ["0:160~300;590~690", "0:370~450;500~580;750~940", "0:300~400;560~600", "0:650~900;1100~1200;1300~1450", "0:1000~1050;1100~1250;1500~1650"]
+
+for fc_spw, spw_ms in zip(fc_spw_list, spw_ms_list):
+    uvcontsub(vis=spw_ms,
+        outputvis=spw_ms+".contsub",
+        fitspec=fc_spw, 
+        fitorder=0)
