@@ -1161,3 +1161,98 @@ tclean(vis = cont_selfcal_comb_list,
 
 exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
 exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
+
+###################################################################################################
+## Only include long baseline data
+###################################################################################################
+
+cont_selfcal_ms = "./cygxnw14_X8203_contave_selfcal005.ms"
+imc = '0.01arcsec'
+ims = [4000,4000]
+nit = 100000
+threshold = '0.01mJy' # 3*rms; 1rms~ 0.05mJy/beam 
+wt = 'briggs'
+rob = 0.5
+imname = "./cont_test/cygxnw14_X8203_750klambda"
+
+tclean(vis = cont_selfcal_ms,
+  imagename=imname,
+  specmode='mfs',
+  #deconvolver='multiscale',
+  deconvolver='hogbom',
+  uvrange=">750klambda",
+  niter=nit,
+  #scales = [0,5,15],
+  imsize=ims, 
+  cell=imc,
+  # phasecenter = pc,
+  threshold=threshold,  
+  # nterms=2, 
+  gridder='standard', 
+  weighting=wt,
+  outframe = 'LSRK', 
+  interactive = False,
+  pblimit = 0.2,
+  robust = rob,
+  pbcor = True,
+  restoringbeam = 'common',
+  usemask = 'auto-multithresh',
+  ## b75 > 400m
+  sidelobethreshold = 1.0,
+  noisethreshold = 5.0,
+  minbeamfrac = 0.3,
+  lownoisethreshold = 1.5,
+  negativethreshold = 0.0,
+  verbose=True,
+  fastnoise=True
+)
+
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
+
+cont_selfcal_ms = "./cygxnw14_X8203_contave_selfcal005.ms"
+imc = '0.01arcsec'
+ims = [4000,4000]
+nit = 100000
+threshold = '0.01mJy' # 3*rms; 1rms~ 0.05mJy/beam 
+wt = 'briggs'
+rob = 0.5
+imname = "./cont_test/2000klambda/cygxnw14_X8203_2000klambda"
+
+tclean(vis = cont_selfcal_ms,
+  imagename=imname,
+  specmode='mfs',
+  #deconvolver='multiscale',
+  deconvolver='hogbom',
+  uvrange=">2000klambda",
+  niter=nit,
+  #scales = [0,5,15],
+  imsize=ims, 
+  cell=imc,
+  # phasecenter = pc,
+  threshold=threshold,  
+  # nterms=2, 
+  gridder='standard', 
+  weighting=wt,
+  outframe = 'LSRK', 
+  interactive = False,
+  pblimit = 0.2,
+  robust = rob,
+  pbcor = True,
+  restoringbeam = 'common',
+  usemask = 'auto-multithresh',
+  ## b75 > 400m
+  sidelobethreshold = 0.5,
+  noisethreshold = 5.0,
+  minbeamfrac = 0.3,
+  lownoisethreshold = 1.5,
+  negativethreshold = 0.0,
+  verbose=True,
+  fastnoise=True
+)
+
+exportfits(imagename=imname+".image", fitsimage=imname+".image.fits", overwrite=True, history=True, dropdeg=True)
+exportfits(imagename=imname+".image.pbcor", fitsimage=imname+".image.pbcor.fits", overwrite=True, history=True, dropdeg=True)
+
