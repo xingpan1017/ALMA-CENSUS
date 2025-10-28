@@ -93,7 +93,7 @@ restfreq_list = ["218.440063GHz", "218.475632GHz", "218.760066GHz", "217.2385378
 				"232.783446GHz", "232.945797GHz", "232.418521GHz", "217.104919GHz", "220.6792874GHz"]
 spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 1, 2]
 
-start_index, end_index = 0, 0
+start_index, end_index = 0, 21
 
 for i in np.arange(start_index, end_index+1):
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
@@ -119,21 +119,21 @@ for i in np.arange(start_index, end_index+1):
 	  start = '220.4354GHz'  ## Vsys ~5.5 km/s
 	  nchan = 550
   else:
-	  start = '-20km/s'  ## Vsys ~5.5 km/s
-	  nchan = 120
+	  start = '-15km/s'  ## Vsys ~5.5 km/s
+	  nchan = 80
     
   tclean(vis = linevis_list,
     imagename=imname,
     specmode='cube',
     deconvolver = 'multiscale',
     #:spw = "%d"%spw,
-    niter = 1000000,
+    niter = 100000,
     start = start,
     nchan = nchan,
     robust = robust,
-    scales = [0,5,10,30,50],
+    scales = [0,5,15,50],
     imsize=1600,
-    cell='0.03arcsec',
+    cell='0.01arcsec',
     restfreq = restfreq,
     #phasecenter = pc,
     threshold=threshold,  
@@ -147,7 +147,7 @@ for i in np.arange(start_index, end_index+1):
     usemask = 'auto-multithresh',
   ## b75 > 400m
     sidelobethreshold = 2.5,
-    noisethreshold = 5.0,
+    noisethreshold = 3.0, ## The line emission is much fainter, so we should decrease the noisethreshold
     minbeamfrac = 0.3,
     lownoisethreshold = 1.5,
     negativethreshold =  7.0, ## 0.0 for continuum, 7.0 for line imaging
