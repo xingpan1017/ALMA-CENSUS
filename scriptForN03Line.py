@@ -85,15 +85,17 @@ import os
 import numpy as np
 molecule_list = ["CH3OH_4_2_3_1", "H2CO_3_2_2_1", "H2CO_3_21_2_20", "DCN_3_2", "13CN_2_1", "H2CN_3_2", "(CH3)2CO_22_21", "13CO_2_1",\
                  "34SO2_11_10", "C18O_2_1", "HNCO_10_9", "CH3OCH3_25_4_25_3", "(CH3)2CO_23_22", "CH3OCH3_17_16", "HOONO2_28_27", "CH3OH_22_4_21_5", "C2H5OH_13_2_12_2",\
-				"CH3OH_18_3_17_4", "CH3OH_10_-3_11_-2", "CH3OH_10_2_9_3", "SiO_5_4", "CH3CN_12_11_k4_k8"]
+				"CH3OH_18_3_17_4", "CH3OH_10_-3_11_-2", "CH3OH_10_2_9_3", "SiO_5_4", "CH3CN_12_11_k4_k8", "CO_2_1"]
 ## (CH3)2CO has hyperfine structures, Many ladders of CH3CN
 
 restfreq_list = ["218.440063GHz", "218.475632GHz", "218.760066GHz", "217.2385378GHz", "217.301175GHz", "220.260004GHz", "220.3618812GHz", "220.3986842GHz",\
                  "219.3550091GHz", "219.5603541GHz", "219.73385GHz", "230.142683GHz", "230.1767274GHz", "230.2337577GHz", "230.317788GHz", "230.368763GHz", "230.6725581GHz",\
-				"232.783446GHz", "232.945797GHz", "232.418521GHz", "217.104919GHz", "220.6792874GHz"]
-spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 1, 2]
+				"232.783446GHz", "232.945797GHz", "232.418521GHz", "217.104919GHz", "220.6792874GHz", "230.538GHz"]
+spw_list = [0, 0, 0, 1, 1, 2, 2, 2, 3, 3,\
+			3, 4, 4, 4, 4, 4, 4, 5, 5, 5,\
+			1, 2, 4]
 
-start_index, end_index = 0, 21
+start_index, end_index = 22, 22
 
 for i in np.arange(start_index, end_index+1):
   molecule, restfreq, spw = molecule_list[i], restfreq_list[i], spw_list[i]
@@ -115,25 +117,37 @@ for i in np.arange(start_index, end_index+1):
   if molecule in ["SiO_5_4"]:
 	  start = "-60km/s"
 	  nchan = 200
+	  imsize = 1600
+	  cell = "0.01arcsec"
   elif molecule in ["CH3CN_12_11_k4_k8"]:
 	  start = '220.4354GHz'  ## Vsys ~5.5 km/s
 	  nchan = 550
+	  imsize = 1600
+	  cell = "0.01arcsec"
+  elif molecule in ["CO_2_1"]:
+	  start = "-80km/s"
+	  nchan = 350
+	  imsize = 1600
+	  cell = "0.025arcsec"
   else:
 	  start = '-15km/s'  ## Vsys ~5.5 km/s
 	  nchan = 80
+	  imsize = 1600
+	  cell = "0.01arcsec"
+	  
     
   tclean(vis = linevis_list,
     imagename=imname,
     specmode='cube',
     deconvolver = 'multiscale',
-    #:spw = "%d"%spw,
+    #spw = "%d"%spw,
     niter = 100000,
     start = start,
     nchan = nchan,
     robust = robust,
-    scales = [0,5,15,50],
-    imsize=1600,
-    cell='0.01arcsec',
+    scales = [0,5,15],
+    imsize=imsize,
+    cell=cell,
     restfreq = restfreq,
     #phasecenter = pc,
     threshold=threshold,  
@@ -147,7 +161,7 @@ for i in np.arange(start_index, end_index+1):
     usemask = 'auto-multithresh',
   ## b75 > 400m
     sidelobethreshold = 2.5,
-    noisethreshold = 3.0, ## The line emission is much fainter, so we should decrease the noisethreshold
+    noisethreshold = 5.0, ## The line emission is much fainter, so we should decrease the noisethreshold
     minbeamfrac = 0.3,
     lownoisethreshold = 1.5,
     negativethreshold =  7.0, ## 0.0 for continuum, 7.0 for line imaging
